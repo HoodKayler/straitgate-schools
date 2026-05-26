@@ -1,0 +1,5 @@
+# Netlify is used ONLY for Identity/Auth (not hosting).
+# Skip the full build and just publish the public folder.
+[build]
+  command = "echo 'Netlify used for Identity only'"
+  publish = "public"
