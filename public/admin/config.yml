@@ -1,0 +1,129 @@
+backend:
+  name: github
+  repo: your-username/straitgate-schools  # UPDATE THIS to your GitHub repo
+  branch: main
+  base_url: https://api.netlify.com
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "general"
+    label: "General Info"
+    files:
+      - name: "general"
+        label: "Site Settings"
+        file: "content/general.json"
+        fields:
+          - { name: "mission", label: "Mission Statement", widget: "text" }
+          - { name: "vision", label: "Vision Statement", widget: "text" }
+          - { name: "email", label: "Email", widget: "string" }
+          - { name: "phone", label: "Phone", widget: "string" }
+          - { name: "address", label: "Address", widget: "string" }
+          - { name: "whatsapp_phone", label: "WhatsApp Phone", widget: "string" }
+          - { name: "instagram_url", label: "Instagram URL", widget: "string", required: false }
+          - { name: "linkedin_url", label: "LinkedIn URL", widget: "string", required: false }
+          - { name: "youtube_url", label: "YouTube URL", widget: "string", required: false }
+          - { name: "footer_message", label: "Footer Message", widget: "text" }
+          - name: "welcome_messages"
+            label: "Welcome Messages"
+            widget: "list"
+            field: { name: "message", label: "Message", widget: "string" }
+          - name: "values"
+            label: "Core Values"
+            widget: "list"
+            field: { name: "value", label: "Value", widget: "string" }
+          - name: "hero_text"
+            label: "Hero Rotating Text"
+            widget: "list"
+            field: { name: "text", label: "Text", widget: "string" }
+          - { name: "hero_media_url", label: "Hero Background Image/Video URL", widget: "image", required: false }
+          - { name: "hero_media_type", label: "Hero Media Type (e.g. image/jpeg, video/mp4)", widget: "string", required: false }
+
+  - name: "schools"
+    label: "Schools"
+    files:
+      - name: "schools"
+        label: "All Schools"
+        file: "content/schools.json"
+        fields:
+          - name: "schools"
+            label: "Schools"
+            widget: "list"
+            fields:
+              - { name: "id", label: "ID", widget: "number" }
+              - { name: "name", label: "School Name", widget: "string" }
+              - { name: "initial", label: "URL Slug (e.g. snps-magodo)", widget: "string" }
+              - { name: "students_count", label: "Number of Students", widget: "number" }
+              - { name: "logo", label: "Logo", widget: "image", required: false }
+              - { name: "admission_url", label: "Admission Portal URL", widget: "string", required: false }
+              - { name: "address", label: "Address", widget: "string" }
+              - name: "coords"
+                label: "Map Coordinates [lat, lng]"
+                widget: "list"
+                field: { name: "coord", label: "Coordinate", widget: "number", value_type: "float" }
+
+  - name: "news"
+    label: "News & Events"
+    folder: "content/news"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "excerpt", label: "Short Summary", widget: "text" }
+      - { name: "content", label: "Full Content", widget: "markdown" }
+      - { name: "featured_image", label: "Featured Image", widget: "image", required: false }
+      - name: "school"
+        label: "School"
+        widget: "select"
+        options:
+          - { label: "Straitgate Nursery & Primary (Magodo)", value: "snps-magodo" }
+          - { label: "Straitgate Nursery & Primary (Magboro)", value: "snps-magboro" }
+          - { label: "Straitgate College", value: "sc" }
+          - { label: "Straitgate High School", value: "shs" }
+      - name: "category"
+        label: "Category"
+        widget: "select"
+        options: ["Achievements", "Events", "Announcements", "Sports", "Academics"]
+      - { name: "is_featured", label: "Featured Post?", widget: "boolean", default: false }
+      - { name: "date", label: "Date", widget: "datetime", format: "YYYY-MM-DD" }
+
+  - name: "testimonials"
+    label: "Testimonials"
+    folder: "content/testimonials"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    fields:
+      - { name: "name", label: "Name", widget: "string" }
+      - { name: "role", label: "Role (e.g. Parent, Alumni)", widget: "string" }
+      - { name: "review", label: "Testimonial", widget: "text" }
+      - { name: "logo", label: "Photo", widget: "image", required: false }
+      - { name: "link", label: "Link", widget: "string", required: false }
+
+  - name: "history"
+    label: "History Timeline"
+    folder: "content/history"
+    create: true
+    slug: "{{year}}-{{slug}}"
+    extension: "json"
+    fields:
+      - { name: "year", label: "Year", widget: "string" }
+      - { name: "image", label: "Image", widget: "image", required: false }
+      - { name: "content", label: "Description", widget: "markdown" }
+
+  - name: "curricula"
+    label: "Curricula"
+    files:
+      - name: "curricula"
+        label: "All Curricula"
+        file: "content/curricula.json"
+        fields:
+          - name: "curricula"
+            label: "Curricula"
+            widget: "list"
+            fields:
+              - { name: "id", label: "ID", widget: "number" }
+              - { name: "title", label: "Title", widget: "string" }
+              - { name: "content", label: "Description", widget: "text" }

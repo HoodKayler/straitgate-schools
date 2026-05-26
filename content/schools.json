@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Straitgate Nursery & Primary (Magodo)",
+    "initial": "snps-magodo",
+    "students_count": 1200,
+    "logo": "/logo.png",
+    "admission_url": "#",
+    "address": "69 Alh. Bashiru Shittu, Magodo, Lagos",
+    "coords": [6.6235553, 3.3744507]
+  },
+  {
+    "id": 2,
+    "name": "Straitgate Nursery & Primary (Magboro)",
+    "initial": "snps-magboro",
+    "students_count": 950,
+    "logo": "/logo.png",
+    "admission_url": "#",
+    "address": "Road D, Forthright Gardens Estate, Magboro, Ogun State",
+    "coords": [6.7029369, 3.4039485]
+  },
+  {
+    "id": 3,
+    "name": "Straitgate College",
+    "initial": "sc",
+    "students_count": 800,
+    "logo": "/logo.png",
+    "admission_url": "#",
+    "address": "Road D, Forthright Gardens Estate, Magboro, Ogun State",
+    "coords": [6.7029319, 3.4008986]
+  },
+  {
+    "id": 4,
+    "name": "Straitgate High School",
+    "initial": "shs",
+    "students_count": 650,
+    "logo": "/logo.png",
+    "admission_url": "#",
+    "address": "14 Robert Street, Magodo",
+    "coords": [6.6169311, 3.3695676]
+  }
+]
