@@ -28,10 +28,28 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" async defer />
+      </head>
       <body className="min-h-full flex flex-col">
         <LayoutShell general={general} schools={schools}>
           {children}
         </LayoutShell>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (window.netlifyIdentity) {
+                window.netlifyIdentity.on("init", function(user) {
+                  if (!user) {
+                    window.netlifyIdentity.on("login", function() {
+                      document.location.href = "/admin/";
+                    });
+                  }
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
