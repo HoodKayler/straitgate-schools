@@ -39,6 +39,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               if (window.netlifyIdentity) {
+                window.netlifyIdentity.init({
+                  APIUrl: "https://ephemeral-crepe-e6f2b7.netlify.app/.netlify/identity"
+                });
                 window.netlifyIdentity.on("init", function(user) {
                   if (!user) {
                     window.netlifyIdentity.on("login", function() {

@@ -8,6 +8,14 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
+    <script>
+      // Point Netlify Identity to the correct Netlify site (not Vercel)
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.init({
+          APIUrl: "https://ephemeral-crepe-e6f2b7.netlify.app/.netlify/identity"
+        });
+      }
+    </script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>
 </html>
