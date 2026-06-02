@@ -157,7 +157,7 @@ export default function Navbar({ schools }: NavbarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="fixed inset-0 z-[60] overflow-y-auto bg-[#080808] text-white"
+            className="no-scrollbar fixed inset-0 z-[60] overflow-y-auto bg-[#080808] text-white"
           >
             <div className="border-b border-white/10">
               <div className="flex h-20 w-full items-center justify-between px-2 sm:h-24 sm:px-4 lg:px-5">
