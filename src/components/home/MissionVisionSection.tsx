@@ -24,8 +24,8 @@ export default function MissionVisionSection({ general, section }: MissionVision
           <motion.div
             initial={{ scaleX: 1 }}
             whileInView={{ scaleX: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             style={{ transformOrigin: 'left' }}
             className="absolute inset-0 z-20 bg-primary"
           />
@@ -39,10 +39,10 @@ export default function MissionVisionSection({ general, section }: MissionVision
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.45 }}
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
                 className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl"
               >
                 <img
@@ -54,28 +54,28 @@ export default function MissionVisionSection({ general, section }: MissionVision
               </motion.div>
               <div>
                 <motion.span
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0 }}
+                  initial={{ opacity: 0, x: 80 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
                   className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3"
                 >
                   Our Purpose
                 </motion.span>
                 <motion.h2
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.15 }}
+                  initial={{ opacity: 0, x: 80 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
                   className="text-3xl lg:text-4xl font-bold text-dark mb-6"
                 >
                   Mission
                 </motion.h2>
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
+                  initial={{ opacity: 0, x: 80 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
                   className="space-y-3 text-gray-600 text-lg leading-relaxed"
                 >
                   {general.mission.split('\n').filter(Boolean).map((line, i) => (
@@ -95,8 +95,8 @@ export default function MissionVisionSection({ general, section }: MissionVision
           <motion.div
             initial={{ scaleX: 1 }}
             whileInView={{ scaleX: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             style={{ transformOrigin: 'left' }}
             className="absolute inset-0 z-20 bg-primary"
           />
@@ -113,28 +113,28 @@ export default function MissionVisionSection({ general, section }: MissionVision
                 {general.vision && (
                   <div className="mb-10">
                     <motion.span
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0 }}
+                      initial={{ opacity: 0, x: -80 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
                       className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3"
                     >
                       Our Direction
                     </motion.span>
                     <motion.h2
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.15 }}
+                      initial={{ opacity: 0, x: -80 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
                       className="text-3xl lg:text-4xl font-bold text-dark mb-6"
                     >
                       Vision
                     </motion.h2>
                     <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.3 }}
+                      initial={{ opacity: 0, x: -80 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.8, ease: 'easeOut' }}
                       className="space-y-3 text-gray-600 text-lg leading-relaxed"
                     >
                       {general.vision.split('\n').filter(Boolean).map((line, i) => (
@@ -146,10 +146,10 @@ export default function MissionVisionSection({ general, section }: MissionVision
 
                 {general.values && general.values.length > 0 && (
                   <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
+                    initial={{ opacity: 0, x: -80 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.8, ease: 'easeOut' }}
                   >
                     <h3 className="text-2xl font-bold text-dark mb-4">Values</h3>
                     <div className="space-y-3">
@@ -165,10 +165,10 @@ export default function MissionVisionSection({ general, section }: MissionVision
               </div>
 
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.45 }}
+                initial={{ opacity: 0, x: 80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
                 className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl"
               >
                 <img
