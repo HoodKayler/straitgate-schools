@@ -20,7 +20,22 @@ export default function MissionVisionSection({ general, section }: MissionVision
     <>
       {/* Mission */}
       {showMission && general.mission && (
-        <section className="py-20 lg:py-28 bg-light">
+        <div className="relative overflow-hidden">
+          <motion.div
+            initial={{ scaleX: 1 }}
+            whileInView={{ scaleX: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            style={{ transformOrigin: 'left' }}
+            className="absolute inset-0 z-20 bg-primary"
+          />
+          <motion.section
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="py-20 lg:py-28 bg-light"
+          >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <motion.div
@@ -70,12 +85,28 @@ export default function MissionVisionSection({ general, section }: MissionVision
               </div>
             </div>
           </div>
-        </section>
+          </motion.section>
+        </div>
       )}
 
       {/* Vision & Values */}
       {showVision && (general.vision || general.values) && (
-        <section className="py-20 lg:py-28 bg-white">
+        <div className="relative overflow-hidden">
+          <motion.div
+            initial={{ scaleX: 1 }}
+            whileInView={{ scaleX: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            style={{ transformOrigin: 'left' }}
+            className="absolute inset-0 z-20 bg-primary"
+          />
+          <motion.section
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="py-20 lg:py-28 bg-white"
+          >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div>
@@ -149,7 +180,8 @@ export default function MissionVisionSection({ general, section }: MissionVision
               </motion.div>
             </div>
           </div>
-        </section>
+          </motion.section>
+        </div>
       )}
     </>
   );
