@@ -177,12 +177,49 @@ const facilities = [
       'A quiet reading and research environment that supports study habits, literacy, and independent learning.',
     image: 'https://images.pexels.com/photos/9572376/pexels-photo-9572376.jpeg?auto=compress&cs=tinysrgb&w=1200',
   },
+  {
+    title: 'Football Pitch',
+    description:
+      'An open sports field where students build teamwork, fitness, and discipline through competitive play.',
+    image: 'https://images.pexels.com/photos/47730/the-ball-stadion-football-the-pitch-47730.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  },
+  {
+    title: 'Swimming Pool',
+    description:
+      'A supervised pool for swimming lessons, water confidence, and healthy physical development.',
+    image: 'https://images.pexels.com/photos/261327/pexels-photo-261327.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  },
+  {
+    title: 'Art Studio',
+    description:
+      'A bright creative space for drawing, painting, design, and hands-on artistic expression.',
+    image: 'https://images.pexels.com/photos/1153213/pexels-photo-1153213.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  },
+  {
+    title: 'Boarding House',
+    description:
+      'A safe, well-supervised residence where boarders enjoy structured study, rest, and community life.',
+    image: 'https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  },
+  {
+    title: 'Cafeteria',
+    description:
+      'A spacious dining hall serving balanced meals that keep students nourished and ready to learn.',
+    image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  },
+  {
+    title: 'Auditorium',
+    description:
+      'A versatile hall for assemblies, performances, debates, and large school gatherings.',
+    image: 'https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  },
 ];
 
-export default function StraitgateCollegePage({ school, admissionLink }: StraitgateCollegePageProps) {
+export default function StraitgateCollegePage({ school }: StraitgateCollegePageProps) {
   const galleryTrackRef = useRef<HTMLDivElement>(null);
   const videoTrackRef = useRef<HTMLDivElement>(null);
-  const applyHref = admissionLink?.url || school?.admission_url || '/contact';
+  // College apply CTAs always point to the Straitgate College educare admission form.
+  const applyHref = 'https://sgc.educare.school/admission-form';
   const address = school?.address || 'Road D, Forthright Gardens Estate, Magboro, Ogun State';
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
   const scrollableVideoStories = [videoStories[videoStories.length - 1], ...videoStories, videoStories[0]];
@@ -244,8 +281,8 @@ export default function StraitgateCollegePage({ school, admissionLink }: Straitg
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
                 href={applyHref}
-                target={applyHref.startsWith('http') ? '_blank' : undefined}
-                rel={applyHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex min-h-12 items-center justify-center gap-3 bg-primary px-6 py-3 text-sm font-extrabold uppercase tracking-[0.14em] text-white transition-colors hover:bg-primary-dark"
               >
                 Apply to College
@@ -559,32 +596,32 @@ export default function StraitgateCollegePage({ school, admissionLink }: Straitg
             </h2>
           </motion.div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {facilities.map((facility, index) => (
-              <motion.article
-                key={facility.title}
-                {...fadeUp}
-                transition={{ ...fadeUp.transition, delay: index * 0.08 }}
-                tabIndex={0}
-                className="group relative min-h-[25rem] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_24px_60px_-36px_rgba(0,0,0,0.65)] outline-none ring-1 ring-black/5"
-              >
-                <Image
-                  src={facility.image}
-                  alt={`${facility.title} at Straitgate College`}
-                  fill
-                  sizes="(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 group-focus-visible:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-0 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/10 group-focus-visible:bg-primary/10" />
-                <div className="absolute inset-x-0 bottom-0 p-6">
-                  <h3 className="text-2xl font-black text-white">{facility.title}</h3>
-                  <p className="mt-4 max-h-0 overflow-hidden text-sm font-medium leading-6 text-white/78 opacity-0 transition-all duration-500 group-hover:max-h-32 group-hover:opacity-100 group-focus-visible:max-h-32 group-focus-visible:opacity-100">
-                    {facility.description}
-                  </p>
-                </div>
-              </motion.article>
-            ))}
+          <div className="mt-12 overflow-hidden">
+            <div className="facilities-marquee flex w-max gap-6">
+              {[...facilities, ...facilities].map((facility, index) => (
+                <article
+                  key={`${facility.title}-${index}`}
+                  tabIndex={0}
+                  className="group relative min-h-[25rem] w-[18rem] shrink-0 overflow-hidden rounded-[1.75rem] bg-white shadow-[0_24px_60px_-36px_rgba(0,0,0,0.65)] outline-none ring-1 ring-black/5 sm:w-[20rem]"
+                >
+                  <Image
+                    src={facility.image}
+                    alt={`${facility.title} at Straitgate College`}
+                    fill
+                    sizes="(min-width: 640px) 20rem, 18rem"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 group-focus-visible:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/10 group-focus-visible:bg-primary/10" />
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <h3 className="text-2xl font-black text-white">{facility.title}</h3>
+                    <p className="mt-4 max-h-0 overflow-hidden text-sm font-medium leading-6 text-white/78 opacity-0 transition-all duration-500 group-hover:max-h-32 group-hover:opacity-100 group-focus-visible:max-h-32 group-focus-visible:opacity-100">
+                      {facility.description}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -613,8 +650,8 @@ export default function StraitgateCollegePage({ school, admissionLink }: Straitg
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <a
                 href={applyHref}
-                target={applyHref.startsWith('http') ? '_blank' : undefined}
-                rel={applyHref.startsWith('http') ? 'noopener noreferrer' : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-12 items-center justify-center bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-white transition-colors hover:bg-primary-dark"
               >
                 Apply Now
