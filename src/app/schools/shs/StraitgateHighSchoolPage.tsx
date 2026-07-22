@@ -117,7 +117,7 @@ const videoStories = [
     title: 'High school classroom moments',
     platform: 'YouTube',
     href: 'https://www.youtube.com/results?search_query=Straitgate+High+School',
-    image: '/sgpics/high-school-hero.jpg',
+    image: '/sgpics/high-school-campus-drive.jpg',
   },
 ];
 
@@ -176,7 +176,7 @@ export default function StraitgateHighSchoolPage({ school }: StraitgateHighSchoo
       <section className="relative min-h-screen overflow-hidden bg-[#080808] text-white">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-70"
-          style={{ backgroundImage: "url('/sgpics/high-school-hero.jpg')" }}
+          style={{ backgroundImage: "url('/sgpics/high-school-campus-drive.jpg')" }}
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/45 to-[#080808]" />
@@ -249,11 +249,12 @@ export default function StraitgateHighSchoolPage({ school }: StraitgateHighSchoo
                 <div className="mt-6 h-1 w-16 bg-primary" />
                 <p className="mt-6 text-base leading-8 text-gray-700">{headMessage}</p>
                 <div className="mt-7 border-l-4 border-primary pl-5">
-                  <p className="font-semibold text-dark">Dr. Caroline Alao</p>
+                  <p className="font-semibold text-dark">Head of School</p>
                   <p className="mt-1 text-xs font-bold uppercase tracking-wider text-gray-500">
-                    Head of School · Straitgate High School
+                    Straitgate High School
                   </p>
                 </div>
+                
               </div>
             </motion.div>
 
@@ -271,10 +272,8 @@ export default function StraitgateHighSchoolPage({ school }: StraitgateHighSchoo
                     />
                   </div>
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-dark/80 via-dark/25 to-transparent p-5 pt-20">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-white">
-                      School Leadership
-                    </p>
-                    <p className="mt-1 font-serif text-xl text-white">Welcome to high school</p>
+                    
+                    <p className="mt-1 font-serif text-xl text-white">Dr. Caroline Alao</p>
                   </div>
                 </div>
               </div>
@@ -338,7 +337,7 @@ export default function StraitgateHighSchoolPage({ school }: StraitgateHighSchoo
 
           <div className="relative min-h-[520px] overflow-hidden bg-white lg:min-h-full">
             <Image
-              src="/sgpics/high-school-hero.jpg"
+              src="/sgpics/high-school-campus-drive.jpg"
               alt="Straitgate High School classroom learning"
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"

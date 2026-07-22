@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FadeIn from '@/components/FadeIn';
@@ -61,9 +62,11 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
               className="bg-light rounded-2xl p-8 lg:p-10 text-center"
             >
               <div className="w-16 h-16 mx-auto mb-5 rounded-full overflow-hidden bg-gray-200">
-                <img
+                <Image
                   src={t.logo ? t.logo : '/images/avatar.png'}
                   alt={t.name}
+                  width={64}
+                  height={64}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -89,9 +92,8 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
                   <button
                     key={i}
                     onClick={() => { setDirection(i > activeIndex ? 1 : -1); setCurrent(i); }}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? 'bg-primary w-6' : 'bg-gray-300'
-                    }`}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? 'bg-primary w-6' : 'bg-gray-300'
+                      }`}
                   />
                 ))}
               </div>
