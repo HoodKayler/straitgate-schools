@@ -17,6 +17,12 @@ export default function Footer({ general, schools }: FooterProps) {
   const phone = general.phone;
   const whatsapp = general.whatsapp_phone;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(general.address)}`;
+  const schoolFooterLinks = [
+    { key: 'nursery', name: 'Straitgate Nursery & Primary', href: '/schools/nursery' },
+    ...schools
+      .filter((school) => school.initial !== 'snps-magodo' && school.initial !== 'snps-magboro')
+      .map((school) => ({ key: String(school.id), name: school.name, href: `/schools/${school.initial}` })),
+  ];
 
   return (
     <footer className="bg-[#080808] text-white">
@@ -35,9 +41,9 @@ export default function Footer({ general, schools }: FooterProps) {
           <div>
             <h3 className="mb-5 text-sm font-extrabold uppercase tracking-[0.14em] text-white">Our Schools</h3>
             <ul className="space-y-2">
-              {schools.map((school) => (
-                <li key={school.id}>
-                  <Link href={`/schools/${school.initial}`} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>{school.name}</Link>
+              {schoolFooterLinks.map((school) => (
+                <li key={school.key}>
+                  <Link href={school.href} target="_blank" rel="noopener noreferrer" className={footerLinkClass}>{school.name}</Link>
                 </li>
               ))}
             </ul>

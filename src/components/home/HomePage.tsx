@@ -13,6 +13,12 @@ import SchoolHeadSection from './SchoolHeadSection';
 
 const activities = [
   {
+    title: 'Bible Study',
+    image: 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=800&q=80',
+    bg: 'bg-[#f5f0eb]',
+    text: 'Our Bible Study fellowship grounds students in scripture, prayer, and Christian character. Weekly sessions of memory verses, devotionals, and discussion nurture faith, wisdom, and a heart for God.',
+  },
+  {
     title: 'Coding / ICT Club',
     image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80',
     bg: 'bg-white',
