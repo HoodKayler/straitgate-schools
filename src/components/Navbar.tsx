@@ -40,14 +40,13 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
   const activeAdmissionTerm =
     activeSchoolSlug === 'sc' ? 'college'
     : activeSchoolSlug === 'shs' ? 'high'
-    : activeSchoolSlug === 'snps-magboro' ? 'forthright'
-    : activeSchoolSlug === 'snps-magodo' ? 'magodo'
     : '';
   const activeAdmissionLink = activeAdmissionTerm
     ? admissionLinks.find((link) => link.name.toLowerCase().includes(activeAdmissionTerm))
     : undefined;
   const activeSchool = schools.find((school) => school.initial === activeSchoolSlug);
-  const brandLabel = activeSchool ? activeSchool.name : 'Straitgate Schools';
+  const brandLabel =
+    activeSchoolSlug === 'nursery' ? 'Straitgate Nursery & Primary' : activeSchool ? activeSchool.name : 'Straitgate Schools';
   const isStraitgateCollege = activeSchoolSlug === 'sc';
   const logoConfig =
     activeSchoolSlug === 'sc'
@@ -64,7 +63,7 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             width: 248,
             height: 292,
           }
-        : activeSchoolSlug === 'snps-magodo' || activeSchoolSlug === 'snps-magboro'
+        : activeSchoolSlug === 'nursery'
           ? {
               src: '/sgpics/logos/straitgate-nursery-primary.png',
               alt: 'Straitgate Nursery and Primary logo',
@@ -77,6 +76,12 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
               width: 840,
               height: 472,
             };
+  const schoolMenuLinks = [
+    { key: 'nursery', name: 'Nursery', href: '/schools/nursery' },
+    ...schools
+      .filter((school) => school.initial !== 'snps-magodo' && school.initial !== 'snps-magboro')
+      .map((school) => ({ key: String(school.id), name: school.name, href: `/schools/${school.initial}` })),
+  ];
   const logoClassName = 'h-14 w-auto object-contain sm:h-20';
   const [scrolled, setScrolled] = useState(false);
   const [navVisible, setNavVisible] = useState(true);
@@ -164,9 +169,9 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
         <>
           <p className="text-xs font-extrabold tracking-[0.14em] text-primary">Our Schools</p>
           <ul className={`${compact ? 'mt-2' : 'mt-4'} divide-y divide-white/10`}>
-            {schools.map((school) => (
-              <li key={school.id}>
-                <Link href={`/schools/${school.initial}`} target="_blank" rel="noopener noreferrer" onClick={closeMenu} className={`${compact ? 'py-2.5 text-base' : 'py-3 text-lg'} block font-semibold leading-7 text-white/80 transition-colors hover:text-primary`}>
+            {schoolMenuLinks.map((school) => (
+              <li key={school.key}>
+                <Link href={school.href} target="_blank" rel="noopener noreferrer" onClick={closeMenu} className={`${compact ? 'py-2.5 text-base' : 'py-3 text-lg'} block font-semibold leading-7 text-white/80 transition-colors hover:text-primary`}>
                   {school.name}
                 </Link>
               </li>
