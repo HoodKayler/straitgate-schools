@@ -2,25 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import {
-  AcademicCapIcon,
-  ArrowRightIcon,
-  BeakerIcon,
-  ComputerDesktopIcon,
-  FireIcon,
-  GiftIcon,
-  HeartIcon,
-  LanguageIcon,
-  MapPinIcon,
-  SparklesIcon,
-  StarIcon,
-  SunIcon,
-  TrophyIcon,
-  UserGroupIcon,
-} from '@heroicons/react/24/outline';
-import SchoolGallery from '@/components/schools/SchoolGallery';
-import FacilitiesStackSection from '@/components/schools/FacilitiesStackSection';
+import { FormEvent, useRef, useState } from 'react';
+import './playful.css';
 
 type NurseryPageProps = {
   magodoAddress?: string;
@@ -29,88 +12,105 @@ type NurseryPageProps = {
   forthrightApplyUrl: string;
 };
 
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-} as const;
-
-const float = (delay = 0) => ({
-  animate: { y: [0, -14, 0], rotate: [0, 4, 0] },
-  transition: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay } as const,
-});
-
-const pillars = [
+const choiceItems = [
   {
-    title: 'Excellence',
-    description: 'Consistently outstanding performance in national and international assessments.',
-    icon: AcademicCapIcon,
+    icon: '◎',
+    title: 'Christ-centered care',
+    copy: 'Faith, kindness and godly character are woven through every school day.',
+    color: 'pink',
   },
   {
-    title: 'Awards',
-    description: 'Victories in spelling bees, mathematics contests, and creative writing competitions.',
-    icon: TrophyIcon,
+    icon: '✎',
+    title: 'Extra activities',
+    copy: 'Clubs, creative arts and sports make each school day richer and more joyful.',
+    color: 'green',
   },
   {
-    title: 'Digital Learning',
-    description: 'Modern digital tools including interactive boards and an LMS for blended learning.',
-    icon: ComputerDesktopIcon,
+    icon: '⌖',
+    title: 'Complete tracking',
+    copy: 'Teachers and families stay connected to every child’s progress and growth.',
+    color: 'sun',
   },
   {
-    title: 'Christian Values',
-    description: 'Faith, integrity, and compassion woven into daily school life and character formation.',
-    iconImage: '/sgpics/cross-icon.png',
-  },
-  {
-    title: 'Sports',
-    description: 'Active sports and games that build teamwork, discipline, fitness, and healthy competition.',
-    icon: FireIcon,
-  },
-  {
-    title: 'Science Projects',
-    description: 'Hands-on experiments and projects that spark curiosity and practical understanding.',
-    icon: BeakerIcon,
-  },
-  {
-    title: 'Bilingualism',
-    description: 'Confident communication and language skills nurtured for a truly global perspective.',
-    icon: LanguageIcon,
-  },
-  {
-    title: 'Charity',
-    description: 'Service and giving that grow kindness, empathy, and social responsibility in every pupil.',
-    icon: GiftIcon,
+    icon: '▣',
+    title: 'Individual care',
+    copy: 'A warm community where every pupil is seen, known and encouraged to shine.',
+    color: 'sky',
   },
 ];
 
-const pillarThemes = [
-  { bg: 'bg-[#FFF3D6]', icon: 'bg-[#F0B429]' },
-  { bg: 'bg-[#E3F5FF]', icon: 'bg-[#3AA9DB]' },
-  { bg: 'bg-[#FFE7DE]', icon: 'bg-[#FF7A50]' },
-  { bg: 'bg-[#E7F8E8]', icon: 'bg-[#5FC169]' },
-  { bg: 'bg-[#F2EAFB]', icon: 'bg-[#A98AE0]' },
+const featuredCourses = [
+  { icon: 'lotus', title: ['Nursery', '& Pre-K'], color: 'pink' },
+  { icon: 'book', title: ['Lower', 'Primary'], color: 'pink' },
+  { icon: 'school', title: ['Upper', 'Primary'], color: 'blue' },
+  { icon: 'shirt', title: ['Activity', 'Clubs'], color: 'blue' },
 ];
 
-const facilities = [
-  { title: 'Science Lab', description: 'Simple science and discovery space.', image: '/sgpics/home-stem-club.jpg' },
-  { title: 'ICT Lab', description: 'Digital skills and computer learning.', image: '/sgpics/home-stem-club.jpg' },
-  { title: 'Library', description: 'Reading and independent study.', image: '/sgpics/home-press-club.jpg' },
-  { title: 'Playground', description: 'Active play, teamwork, and fitness.', image: '/sgpics/home-football-academy.jpg' },
-  { title: 'Music Room', description: 'Music, rehearsal, and performance room.', image: '/sgpics/home-music-performing-arts.jpg' },
-  { title: 'E-Classrooms', description: 'Interactive lessons and digital learning.', image: '/sgpics/home-stem-club.jpg' },
+const activities = ['Outdoor Games', 'Table/Floor Toys', 'Sport Activities', 'Water Games'];
+
+const gallery = [
+  { src: '/straitgate-nursery-and-primary-school-magodo.jpg', alt: 'Straitgate Magodo pupils learning together' },
+  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.jpg', alt: 'Straitgate Forthright pupils at play' },
+  { src: '/straitgate-nursery-and-primary-school-magodo4.jpg', alt: 'Young Straitgate learners collaborating' },
+  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.1.jpg', alt: 'Straitgate Forthright classroom life' },
+  { src: '/straitgate-nursery-and-primary-school-magodo9.jpg', alt: 'Active pupil life at Straitgate Magodo' },
+  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.2.jpg', alt: 'A colourful Straitgate learning moment' },
+  { src: '/straitgate-nursery-and-primary-school-magodo11.jpg', alt: 'Reading time at Straitgate Magodo' },
+  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.3.jpg', alt: 'Guided study at Straitgate Forthright' },
 ];
 
-const galleryImages = [
-  { src: '/straitgate-nursery-and-primary-school-magodo.jpg', alt: 'Magodo branch pupil life', label: 'Magodo — Focused learning' },
-  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.jpg', alt: 'Forthright branch pupil life', label: 'Forthright — Focused learning' },
-  { src: '/straitgate-nursery-and-primary-school-magodo1.jpg', alt: 'Magodo branch pupil life', label: 'Magodo — Pupil community' },
-  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.1.jpg', alt: 'Forthright branch pupil life', label: 'Forthright — Pupil community' },
-  { src: '/straitgate-nursery-and-primary-school-magodo4.jpg', alt: 'Magodo branch pupil life', label: 'Magodo — Pupil collaboration' },
-  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.2.jpg', alt: 'Forthright branch pupil life', label: 'Forthright — Purposeful campus' },
-  { src: '/straitgate-nursery-and-primary-school-magodo9.jpg', alt: 'Magodo branch pupil life', label: 'Magodo — Active pupil life' },
-  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.3.jpg', alt: 'Forthright branch pupil life', label: 'Forthright — Guided study' },
+const newsItems = [
+  {
+    src: '/nursery-playful/reference-sections/news-1.jpg',
+    alt: 'A child enjoying a book outdoors',
+    title: 'Make learning fun for your child',
+    date: 'June 10, 2026',
+    copy: 'Simple routines, joyful reading and purposeful play help children become confident lifelong learners.',
+    href: 'https://www.straitgateschool.org/public/index.php/schools/straitgate-nursery-and-primary-school-forthright/news/28',
+  },
+  {
+    src: '/nursery-playful/reference-sections/news-2.jpg',
+    alt: 'Two children lying together and smiling',
+    title: 'Growing confidence every day',
+    date: 'May 24, 2026',
+    copy: 'Classroom discovery, friendship and character-building experiences make every school week memorable.',
+    href: 'https://site.straitgateschool.org/schools/straitgate-nursery-and-primary-school-forthright/news/12',
+  },
 ];
+
+function CourseGlyph({ type }: { type: string }) {
+  if (type === 'school') {
+    return (
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M5 27V13h22v14M3 27h26M8 13V9h10v4M18 9V5h7M25 5v4h-7M10 17h4v4h-4zM18 17h4v10h-4z" />
+      </svg>
+    );
+  }
+
+  if (type === 'book') {
+    return (
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M4 9c5-2 9-1 12 2v16c-3-3-7-4-12-2V9Zm24 0c-5-2-9-1-12 2v16c3-3 7-4 12-2V9ZM12 7l1-3m4 3V3m4 5 2-3" />
+        <path d="M10 14c2 0 4 .5 6 2m-6 3c2 0 4 .5 6 2m6-7c-2 0-4 .5-6 2m6 3c-2 0-4 .5-6 2" />
+      </svg>
+    );
+  }
+
+  if (type === 'lotus') {
+    return (
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M16 25c-1-7 2-12 7-15 1 6-1 11-7 15Zm0 0c1-7-2-12-7-15-1 6 1 11 7 15Zm0-1c-5-2-10-1-14 3 5 3 10 2 14-2m0 0c5-2 10-1 14 3-5 3-10 2-14-2M16 7c-4 4-4 9 0 15 4-6 4-11 0-15Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="m11 6-7 4 4 7 3-2v12h10V15l3 2 4-7-7-4c-1 3-3 4-5 4s-4-1-5-4Z" />
+      <path d="M13 18h6m-6 4h6" />
+    </svg>
+  );
+}
 
 export default function NurseryPage({
   magodoAddress,
@@ -118,306 +118,506 @@ export default function NurseryPage({
   magodoApplyUrl,
   forthrightApplyUrl,
 }: NurseryPageProps) {
-  const branches = [
-    {
-      key: 'magodo',
-      tag: 'Lagos Campus',
-      name: 'Straitgate Nursery & Primary — Magodo',
-      quote: 'Nurturing young minds with godly principles and a global perspective.',
-      head: 'Mrs. Ugochi Madubuike',
-      photo: '/straitgate-nursery-and-primary-school-magodo-head.jpg',
-      address: magodoAddress || 'Plot 86 Block 122 Alh. Basheer Shittu Street, Magodo, Lagos',
-      applyUrl: magodoApplyUrl,
-      cardBg: 'bg-[#EAF7FF]',
-      cardBorder: 'border-[#BFE7FB]',
-      blob: 'bg-[#BFE7FB]',
-      badge: 'bg-[#1E8FC4]',
-      button: 'bg-[#1E8FC4] hover:bg-[#176E99]',
-      rotate: '-rotate-2',
-    },
-    {
-      key: 'forthright',
-      tag: 'Ogun State Campus',
-      name: 'Straitgate Nursery & Primary — Forthright',
-      quote: 'Every child is a star waiting to shine.',
-      head: 'Mrs. Gbemisola Mordi',
-      photo: '/straitgate-nursery-and-primary-school-forthright-head.jpg',
-      address: forthrightAddress || 'Road D, Forthright Gardens, Magboro, Ogun State',
-      applyUrl: forthrightApplyUrl,
-      cardBg: 'bg-[#FFF6E3]',
-      cardBorder: 'border-[#F5DFA0]',
-      blob: 'bg-[#F5DFA0]',
-      badge: 'bg-[#D98E1B]',
-      button: 'bg-[#D98E1B] hover:bg-[#B8760F]',
-      rotate: 'rotate-2',
-    },
-  ];
+  const [formMessage, setFormMessage] = useState('');
+  const galleryTrackRef = useRef<HTMLDivElement>(null);
+
+  const magodo = magodoAddress || 'Plot 86 Block 122 Alh. Basheer Shittu Street, Magodo, Lagos';
+  const forthright = forthrightAddress || 'Road D, Forthright Gardens, Magboro, Ogun State';
+  const magodoMap = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(magodo)}`;
+  const forthrightMap = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(forthright)}`;
+
+  function handleEnquiry(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get('name') || '').trim();
+    const email = String(form.get('email') || '').trim();
+    const phone = String(form.get('phone') || '').trim();
+    const stage = String(form.get('stage') || '').trim();
+    const campus = String(form.get('campus') || '').trim();
+    const subject = encodeURIComponent(`Straitgate admission enquiry — ${stage} (${campus})`);
+    const body = encodeURIComponent(
+      `Hello Straitgate,\n\nMy name is ${name}.\nEmail: ${email}\nPhone: ${phone}\nCampus of interest: ${campus}\nStage of interest: ${stage}\n\nPlease contact me about the next admission intake.`,
+    );
+
+    setFormMessage('Your email app is opening with your enquiry prepared.');
+    window.location.href = `mailto:info@straitgateschool.org?subject=${subject}&body=${body}`;
+  }
 
   return (
-    <>
-      <section className="relative min-h-[92vh] overflow-hidden bg-gradient-to-b from-[#FFF6E3] via-[#EAF7FF] to-white">
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/45 to-transparent sm:h-40" aria-hidden="true" />
-        <motion.div {...float(0)} className="absolute left-[6%] top-28 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg shadow-black/5">
-          <SunIcon className="h-8 w-8 text-[#F0B429]" />
-        </motion.div>
-        <motion.div {...float(0.6)} className="absolute right-[10%] top-40 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg shadow-black/5">
-          <StarIcon className="h-7 w-7 text-[#3AA9DB]" />
-        </motion.div>
-        <motion.div {...float(1.2)} className="absolute bottom-40 left-[12%] flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg shadow-black/5">
-          <HeartIcon className="h-7 w-7 text-primary" />
-        </motion.div>
-        <motion.div {...float(0.3)} className="absolute bottom-56 right-[8%] flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-lg shadow-black/5">
-          <SparklesIcon className="h-8 w-8 text-[#A98AE0]" />
-        </motion.div>
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#F5DFA0]/40 blur-3xl" aria-hidden="true" />
-        <div className="absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#BFE7FB]/50 blur-3xl" aria-hidden="true" />
-
-        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-5xl flex-col items-center justify-center px-4 pt-28 pb-24 text-center sm:px-6">
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-            className="mt-7 font-serif text-5xl font-bold leading-[1.02] tracking-tight text-dark sm:text-6xl lg:text-7xl"
-          >
-            Straitgate <span className="text-primary">Nursery</span> &amp; Primary
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
-            className="mt-6 max-w-2xl text-lg leading-8 text-gray-600 sm:text-xl"
-          >
-            A colourful, caring place to take a child&apos;s very first steps in learning — where
-            little hands build, little voices sing, and little hearts grow in faith, together.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
-            className="mt-10 flex flex-col gap-4 sm:flex-row"
-          >
-            <a
-              href="#branches"
-              className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-extrabold uppercase tracking-[0.1em] text-white shadow-lg shadow-primary/30 transition-transform hover:-translate-y-0.5 hover:bg-primary-dark"
-            >
-              Meet Our Two Branches
-              <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </a>
-            <Link
-              href="/contact"
-              className="inline-flex min-h-14 items-center justify-center rounded-full border-2 border-dark/10 bg-white px-8 py-4 text-sm font-extrabold uppercase tracking-[0.1em] text-dark shadow-md transition-colors hover:border-primary hover:text-primary"
-            >
-              Come Visit Us
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
-            className="mt-14 flex flex-wrap items-center justify-center gap-3"
-          >
-            {['Play-based learning', 'Caring, gentle teachers', 'Safe & joyful campuses'].map((label) => (
-              <span
-                key={label}
-                className="rounded-full bg-white/80 px-5 py-2.5 text-sm font-bold text-dark shadow-sm backdrop-blur"
-              >
-                {label}
-              </span>
-            ))}
-          </motion.div>
+    <div className="np">
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="hero-word hero-word-top" aria-hidden="true">
+          LEARN
         </div>
+        <div className="hero-word hero-word-bottom" aria-hidden="true">
+          SHINE
+        </div>
+        <div className="hero-doodle hero-doodle-one" aria-hidden="true">
+          ✦
+        </div>
+        <div className="hero-doodle hero-doodle-two" aria-hidden="true">
+          +
+        </div>
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow eyebrow-light">
+              <span className="eyebrow-dot" />
+              Magodo, Lagos · Forthright, Magboro
+            </p>
+            <h1 id="hero-title">
+              Bright minds.
+              <span>Godly hearts.</span>
+              Bold futures.
+            </h1>
+            <p className="hero-intro">
+              A joyful Nursery &amp; Primary School across two campuses, where excellent learning, strong character and
+              every child&apos;s unique gifts grow together.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-sun" href="#contact">
+                Enquire about admission <span aria-hidden="true">↗</span>
+              </a>
+              <Link className="text-link text-link-light" href="/contact">
+                Talk to us <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+            <div className="hero-proof">
+              <div className="proof-faces" aria-hidden="true">
+                <span>S</span>
+                <span>G</span>
+                <span>S</span>
+              </div>
+              <p>
+                <strong>Christ-centered care</strong>
+                <br />
+                raising confident learners
+              </p>
+            </div>
+          </div>
 
-        <svg viewBox="0 0 1440 110" className="absolute bottom-0 left-0 block w-full text-white" preserveAspectRatio="none" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,48 L1440,120 L0,120 Z"
-          />
+          <div className="hero-visual" aria-label="A smiling Straitgate pupil">
+            <div className="rainbow-orbit rainbow-orbit-back" aria-hidden="true" />
+            <Image
+              className="hero-pupil"
+              src="/nursery-playful/hero-pupil-cutout.png"
+              alt="A smiling Straitgate pupil at Bible Character Day"
+              width={1024}
+              height={1536}
+              sizes="(max-width: 620px) 84vw, (max-width: 900px) 520px, 620px"
+              priority
+              unoptimized
+            />
+            <div className="rainbow-orbit rainbow-orbit-front" aria-hidden="true" />
+            <div className="hero-badge hero-badge-quality">
+              <strong>Quality</strong>
+              <span>Education</span>
+            </div>
+            <div className="hero-badge hero-badge-values">
+              <strong>Faith &amp;</strong>
+              <span>Character</span>
+            </div>
+            <div className="hero-badge hero-badge-tech">
+              <strong>Smart</strong>
+              <span>Technology</span>
+            </div>
+            <div className="sunburst" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        </div>
+        <svg className="cloud-edge" viewBox="0 0 1440 170" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 92C28 55 63 54 92 77C110 34 154 13 199 36C230-8 312-5 345 47C367 40 392 50 401 72C438 43 492 48 516 79C553 51 614 56 638 93C675 61 731 68 748 102C786 73 842 74 865 106C895 55 976 48 1009 91C1052 22 1143 25 1175 92C1209 70 1260 76 1281 110C1310 82 1364 80 1440 113V170H0Z" />
         </svg>
       </section>
 
-      <section id="branches" className="relative bg-white py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeUp} className="mx-auto max-w-2xl text-center">
-            <p className="font-serif text-4xl font-bold leading-tight text-primary sm:text-5xl">
-              Choose Your Branch
-            </p>
-            <h2 className="mt-4 text-xl font-semibold leading-8 text-dark sm:text-2xl">
-              One big Straitgate family, two happy places to grow.
-            </h2>
-          </motion.div>
-
-          <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-12">
-            {branches.map((branch, index) => {
-              const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(branch.address)}`;
-
-              return (
-                <motion.article
-                  key={branch.key}
-                  {...fadeUp}
-                  transition={{ ...fadeUp.transition, delay: index * 0.1 }}
-                  className={`relative overflow-hidden rounded-[2.5rem] border-2 ${branch.cardBorder} ${branch.cardBg} p-7 shadow-xl shadow-black/5 sm:p-9`}
-                >
-                  <div className={`absolute -right-10 -top-10 h-40 w-40 rounded-full ${branch.blob}/60 blur-2xl`} aria-hidden="true" />
-
-                  <span className={`relative inline-flex items-center gap-2 rounded-full ${branch.badge} px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.1em] text-white`}>
-                    <MapPinIcon className="h-3.5 w-3.5" />
-                    {branch.tag}
-                  </span>
-
-                  <div className="relative mt-7 flex flex-col gap-6 sm:flex-row sm:items-start">
-                    <div className={`relative mx-auto h-40 w-40 shrink-0 overflow-hidden rounded-[1.75rem] border-4 border-white shadow-lg ${branch.rotate} sm:mx-0`}>
-                      <Image src={branch.photo} alt={`Head of school for ${branch.name}`} fill sizes="160px" className="object-cover object-top" />
-                    </div>
-                    <div className="text-center sm:text-left">
-                      <p className="text-xs font-bold uppercase tracking-[0.14em] text-dark/50">Head of School</p>
-                      <h3 className="mt-1 font-serif text-2xl font-bold text-dark">{branch.head}</h3>
-                      <p className="mt-3 text-base italic leading-7 text-gray-600">&quot;{branch.quote}&quot;</p>
-                    </div>
-                  </div>
-
-                  <a
-                    href={mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="relative mt-7 flex items-start gap-2 rounded-2xl bg-white/70 p-4 text-sm font-semibold leading-6 text-dark transition-colors hover:bg-white"
-                  >
-                    <MapPinIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-                    {branch.address}
-                  </a>
-
-                  <div className="relative mt-6 flex flex-col gap-3 sm:flex-row">
-                    <a
-                      href={branch.applyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full ${branch.button} px-6 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-white shadow-md transition-transform hover:-translate-y-0.5`}
-                    >
-                      Register at {branch.tag.split(' ')[0]}
-                      <ArrowRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                    </a>
-                    <a
-                      href={mapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full border-2 border-dark/10 bg-white px-6 py-3 text-sm font-extrabold uppercase tracking-[0.08em] text-dark transition-colors hover:border-primary hover:text-primary"
-                    >
-                      Get Directions
-                    </a>
-                  </div>
-                </motion.article>
-              );
-            })}
+      <section id="main-content" className="clone-announcement" aria-labelledby="announcement-title">
+        <div className="clone-shell announcement-grid">
+          <div className="announcement-art" aria-hidden="true">
+            <Image src="/nursery-playful/reference-sections/announcement-girl.jpg" alt="" width={240} height={390} unoptimized />
           </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden bg-[#FBF8F2] py-20 sm:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div {...fadeUp} className="mx-auto max-w-2xl text-center">
-            <p className="font-serif text-4xl font-bold leading-tight text-primary sm:text-5xl">
-              Why Kids Love It Here
-            </p>
-            <h2 className="mt-4 text-xl font-semibold leading-8 text-dark sm:text-2xl">
-              Faith, fun, and firm foundations — every single day.
-            </h2>
-          </motion.div>
-
-          <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-            {pillars.map((pillar, index) => {
-              const theme = pillarThemes[index % pillarThemes.length];
-              const Icon = pillar.icon;
-              const rotation = index % 2 === 0 ? '-rotate-1' : 'rotate-1';
-
-              return (
-                <motion.div
-                  key={pillar.title}
-                  {...fadeUp}
-                  transition={{ ...fadeUp.transition, delay: (index % 4) * 0.08 }}
-                  whileHover={{ y: -6, rotate: 0, scale: 1.03 }}
-                  tabIndex={0}
-                  className={`${theme.bg} ${rotation} flex flex-col items-center rounded-3xl p-5 text-center shadow-md shadow-black/5 outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-primary/30 sm:p-6`}
-                >
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${theme.icon} text-white shadow-md`}>
-                    {pillar.iconImage ? (
-                      <Image src={pillar.iconImage} alt="" width={26} height={26} className="h-6 w-6 object-contain brightness-0 invert" />
-                    ) : Icon ? (
-                      <Icon className="h-6 w-6" aria-hidden="true" />
-                    ) : null}
-                  </div>
-                  <h3 className="mt-4 font-serif text-lg font-bold leading-tight text-dark">{pillar.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-gray-600">{pillar.description}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <SchoolGallery
-        images={galleryImages}
-        subtitle="Bright classrooms and big smiles from both our Magodo and Forthright branches."
-      />
-
-      <FacilitiesStackSection
-        facilities={facilities}
-        subtitle="Purpose-built spaces for play, discovery, and growth across both branches."
-      />
-
-      <section className="relative overflow-hidden bg-primary py-20 text-white sm:py-24">
-        <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[#172554] lg:block" aria-hidden="true" />
-        <div className="absolute left-10 top-10 h-3 w-3 rounded-full bg-white/40" aria-hidden="true" />
-        <div className="absolute left-24 top-24 h-2 w-2 rounded-full bg-white/30" aria-hidden="true" />
-        <div className="absolute right-16 bottom-16 h-3 w-3 rounded-full bg-white/30" aria-hidden="true" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <motion.div {...fadeUp}>
-            <p className="font-serif text-4xl font-bold leading-tight text-white sm:text-5xl">Admissions Now Open</p>
-            <h2 className="mt-4 text-xl font-semibold leading-8 text-white/90 sm:text-2xl">
-              Ready to start your child&apos;s Straitgate journey?
-            </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-white/80">
-              Pick a branch and register today. Our admissions team will guide you through
-              requirements, a campus visit, and placement.
-            </p>
-          </motion.div>
-
-          <motion.div {...fadeUp} className="rounded-[2rem] bg-white p-7 text-dark shadow-2xl sm:p-9">
-            <UserGroupIcon className="h-9 w-9 text-primary" />
-            <h3 className="mt-5 text-2xl font-bold">Register at a Branch</h3>
-            <p className="mt-3 leading-7 text-gray-600">
-              Choose Magodo or Forthright and complete the application form — we&apos;ll take it
-              from there.
-            </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={magodoApplyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-12 flex-1 items-center justify-center bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-white transition-colors hover:bg-primary-dark"
-              >
-                Magodo
-              </a>
-              <a
-                href={forthrightApplyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-12 flex-1 items-center justify-center bg-primary px-5 py-3 text-sm font-extrabold uppercase tracking-[0.1em] text-white transition-colors hover:bg-primary-dark"
-              >
-                Forthright
-              </a>
+          <div className="announcement-title">
+            <p className="clone-kicker">From the school desk</p>
+            <h2 id="announcement-title">Announcement</h2>
+            <div className="clone-controls" aria-hidden="true">
+              <span>‹</span>
+              <span>›</span>
             </div>
-            <Link
-              href="/contact"
-              className="mt-4 inline-flex min-h-12 w-full items-center justify-center border border-black/15 px-5 py-3 text-sm font-extrabold uppercase tracking-[0.12em] text-dark transition-colors hover:border-primary hover:text-primary"
-            >
-              Contact Us
-            </Link>
-          </motion.div>
+          </div>
+          <div className="announcement-copy">
+            <p>
+              Admissions enquiries are open for the next Nursery and Primary intake at our Magodo (Lagos) and Forthright
+              (Magboro) campuses. Tour our learning spaces, meet the team and discover a community where every child is
+              known.
+            </p>
+            <a className="clone-pill" href="#contact">
+              Enquire now
+            </a>
+          </div>
+        </div>
+        <span className="clone-star announcement-star-one" aria-hidden="true">
+          ✦
+        </span>
+        <span className="clone-star announcement-star-two" aria-hidden="true">
+          +
+        </span>
+      </section>
+
+      <section id="about" className="clone-choice" aria-labelledby="choice-title">
+        <div className="clone-shell choice-grid">
+          <div className="choice-copy">
+            <p className="clone-kicker">A joyful place to grow</p>
+            <h2 id="choice-title">Why choose Straitgate</h2>
+            <div className="choice-list">
+              {choiceItems.map((item) => (
+                <article className="choice-item" key={item.title}>
+                  <span className={`choice-icon choice-icon-${item.color}`} aria-hidden="true">
+                    {item.icon}
+                  </span>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>{item.copy}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <a className="clone-pill" href="#why">
+              Discover more
+            </a>
+          </div>
+          <div className="choice-photo">
+            <Image
+              src="/nursery-playful/reference-sections/why-reading.jpg"
+              alt="Children reading colourful books together"
+              fill
+              sizes="(max-width: 800px) 92vw, 42vw"
+              unoptimized
+            />
+          </div>
+        </div>
+        <div className="choice-saturn" aria-hidden="true">
+          <span />
+        </div>
+        <div className="jump-figure" aria-hidden="true">
+          <div className="jump-ring" />
+          <Image
+            src="/nursery-playful/reference-sections/jumping-boy.png"
+            alt=""
+            width={980}
+            height={1605}
+            sizes="(max-width: 700px) 86vw, 610px"
+            unoptimized
+          />
         </div>
       </section>
-    </>
+
+      <section id="programs" className="clone-courses" aria-labelledby="courses-title">
+        <div className="clone-shell courses-layout">
+          <div className="courses-spacer" aria-hidden="true" />
+          <div className="courses-copy">
+            <h2 id="courses-title">Our programmes</h2>
+            <div className="course-grid">
+              {featuredCourses.map((course) => (
+                <article className="course-item" key={course.title.join(' ')}>
+                  <span className={`course-icon course-icon-${course.color}`} aria-hidden="true">
+                    <CourseGlyph type={course.icon} />
+                  </span>
+                  <h3>
+                    {course.title.map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </h3>
+                </article>
+              ))}
+            </div>
+            <a className="clone-pill clone-pill-light" href="#contact">
+              View All
+            </a>
+          </div>
+        </div>
+        <svg className="course-flask" viewBox="0 0 116 150" aria-hidden="true">
+          <path className="course-flask-glass" d="M37 8h42v13H73v34l32 58c7 13-2 29-17 29H28c-15 0-24-16-17-29l32-58V21h-6V8Z" />
+          <path className="course-flask-liquid" d="M26 97c20 8 41-10 65-2l14 25c5 10-2 22-14 22H25c-12 0-19-12-14-22l15-23Z" />
+          <circle cx="44" cy="112" r="6" />
+          <circle cx="75" cy="124" r="8" />
+          <circle cx="84" cy="104" r="4" />
+        </svg>
+      </section>
+
+      <section id="why" className="clone-activities" aria-labelledby="activities-title">
+        <svg className="course-palette" viewBox="0 0 120 120" aria-hidden="true">
+          <path d="M62 8c29 0 52 21 52 48 0 18-11 26-24 25-10-1-16 3-14 13 2 12-5 18-17 18C30 112 7 91 7 62 7 32 31 8 62 8Z" />
+          <circle cx="39" cy="35" r="8" />
+          <circle cx="67" cy="27" r="8" />
+          <circle cx="91" cy="43" r="8" />
+          <circle cx="92" cy="69" r="8" />
+          <path className="course-palette-brush" d="m31 102 13-65 12 2-9 66Z" />
+        </svg>
+        <div className="science-blob" aria-hidden="true">
+          <svg className="science-blob-shape" viewBox="0 0 920 560" preserveAspectRatio="none">
+            <path d="M85 0H920c-67 42-77 91-10 128 42 23 36 63-10 88-58 31-52 79 9 109 54 26 47 76-14 106-58 28-58 75-8 129-67-40-117-6-183-22-66-16-120 20-184 4-68-17-126 16-190 0-49-14-85-4-112 18-96 0-128-40-82-82 45-41 27-77-53-96-76-19-77-67-5-103 73-37 70-81-7-105C-8 149-4 96 78 69 133 51 136 27 85 0Z" />
+          </svg>
+          <svg className="science-flask" viewBox="0 0 126 154">
+            <path className="science-flask-glass" d="M40 5h46v14h-7v37l34 62c7 14-3 30-18 30H31c-16 0-25-16-18-30l34-62V19h-7V5Z" />
+            <path className="science-flask-liquid" d="M25 103c24-8 48 12 77 1l12 23c5 10-3 21-15 21H28c-12 0-20-11-15-21l12-24Z" />
+            <circle cx="44" cy="125" r="7" />
+            <circle cx="75" cy="132" r="9" />
+          </svg>
+          <span className="science-planet" />
+          <span className="science-star science-star-one">✦</span>
+          <span className="science-star science-star-two">+</span>
+        </div>
+        <div className="clone-shell activities-layout">
+          <div className="activities-copy">
+            <h2 id="activities-title">
+              We Provide the
+              <br />
+              Main Kids Activities
+            </h2>
+            <p>
+              Purposeful play gives pupils room to imagine, collaborate and practise new skills. Our programme balances
+              active discovery with caring guidance.
+            </p>
+            <p>
+              Music, movement, creative projects and games help every learner find new strengths and lasting friendships.
+            </p>
+            <ul className="activity-list">
+              {activities.map((activity) => (
+                <li key={activity}>
+                  <span className="activity-pencil" aria-hidden="true" />
+                  {activity}
+                </li>
+              ))}
+            </ul>
+            <a className="clone-pill" href="#gallery">
+              View All
+            </a>
+          </div>
+        </div>
+        <Image
+          className="painting-child"
+          src="/nursery-playful/reference-sections/painting-child.png"
+          alt=""
+          width={922}
+          height={1706}
+          sizes="(max-width: 700px) 58vw, 430px"
+          unoptimized
+        />
+      </section>
+
+      <section className="clone-enrol-band" aria-label="Admissions call to action">
+        <div className="clone-shell enrol-band-inner">
+          <strong>Make your child&apos;s school years special at Straitgate.</strong>
+          <a className="clone-pill" href={magodoApplyUrl} target="_blank" rel="noreferrer">
+            Register — Magodo
+          </a>
+          <a className="clone-pill" href={forthrightApplyUrl} target="_blank" rel="noreferrer">
+            Register — Forthright
+          </a>
+          <small>Two campuses · Lagos &amp; Ogun State</small>
+        </div>
+      </section>
+
+      <section id="gallery" className="clone-gallery" aria-labelledby="gallery-title">
+        <div className="clone-gallery-dots" aria-hidden="true" />
+        <span className="clone-gallery-candy" aria-hidden="true">
+          ✦
+        </span>
+        <div className="clone-shell">
+          <div className="clone-center-heading">
+            <p className="clone-kicker">Everyday joy at Straitgate</p>
+            <h2 id="gallery-title">Our gallery</h2>
+          </div>
+          <div className="gallery-showcase">
+            <button
+              className="gallery-arrow gallery-arrow-left"
+              type="button"
+              aria-label="Scroll gallery left"
+              onClick={() => galleryTrackRef.current?.scrollBy({ left: -320, behavior: 'smooth' })}
+            >
+              ‹
+            </button>
+            <div ref={galleryTrackRef} className="clone-gallery-track">
+              {gallery.map((item) => (
+                <figure className="clone-gallery-item" key={item.src}>
+                  <Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 62vw, 250px" unoptimized />
+                </figure>
+              ))}
+            </div>
+            <button
+              className="gallery-arrow gallery-arrow-right"
+              type="button"
+              aria-label="Scroll gallery right"
+              onClick={() => galleryTrackRef.current?.scrollBy({ left: 320, behavior: 'smooth' })}
+            >
+              ›
+            </button>
+          </div>
+          <a
+            className="clone-pill gallery-button"
+            href="https://www.instagram.com/straitgateschools/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View school life
+          </a>
+        </div>
+      </section>
+
+      <section className="clone-testimonial" aria-labelledby="testimonial-title">
+        <Image
+          className="testimonial-woman"
+          src="/nursery-playful/reference-sections/testimonial-woman.png"
+          alt=""
+          width={1023}
+          height={1537}
+          sizes="(max-width: 700px) 62vw, 430px"
+          unoptimized
+        />
+        <div className="clone-shell testimonial-layout">
+          <div className="testimonial-spacer" aria-hidden="true" />
+          <div className="testimonial-title">
+            <p className="clone-kicker clone-kicker-light">What families say</p>
+            <h2 id="testimonial-title">Parents&apos; testimonials</h2>
+            <div className="clone-controls clone-controls-light" aria-hidden="true">
+              <span>‹</span>
+              <span>›</span>
+            </div>
+          </div>
+          <div className="testimonial-quote">
+            <span className="testimonial-quote-mark" aria-hidden="true">
+              “
+            </span>
+            <blockquote>
+              Straitgate has been an incredible blessing for our family. The academic standards are high, and our children
+              have grown not just intellectually but in character and faith.
+            </blockquote>
+            <cite>
+              <strong>Mrs. Adebayo</strong>
+              <span>Straitgate parent</span>
+            </cite>
+          </div>
+        </div>
+        <div className="testimonial-notebook" aria-hidden="true">
+          <span />
+        </div>
+      </section>
+
+      <section className="clone-news" aria-labelledby="news-title">
+        <div className="clone-shell">
+          <div className="clone-center-heading">
+            <p className="clone-kicker">Stories from our community</p>
+            <h2 id="news-title">Latest news</h2>
+          </div>
+          <div className="news-row">
+            <span className="news-arrow news-arrow-left" aria-hidden="true">
+              ‹
+            </span>
+            {newsItems.map((item) => (
+              <article className="news-card" key={item.title}>
+                <div className="news-photo">
+                  <Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 42vw, 230px" unoptimized />
+                </div>
+                <div className="news-copy">
+                  <h3>{item.title}</h3>
+                  <p className="news-date">
+                    <span aria-hidden="true">▣</span>
+                    {item.date}
+                  </p>
+                  <p>{item.copy}</p>
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    Read more
+                  </a>
+                </div>
+              </article>
+            ))}
+            <span className="news-arrow news-arrow-right" aria-hidden="true">
+              ›
+            </span>
+          </div>
+          <a className="clone-pill news-button" href="#contact">
+            Visit or enquire
+          </a>
+        </div>
+        <span className="news-cloud" aria-hidden="true">
+          ☁
+        </span>
+        <span className="news-globe" aria-hidden="true">
+          🌍
+        </span>
+      </section>
+
+      <section id="contact" className="clone-contact" aria-labelledby="contact-title">
+        <div className="clone-shell contact-stage">
+          <Image
+            className="megaphone-child"
+            src="/nursery-playful/reference-sections/megaphone-child.png"
+            alt=""
+            width={1096}
+            height={1435}
+            sizes="(max-width: 700px) 72vw, 560px"
+            unoptimized
+          />
+          <span className="contact-globe" aria-hidden="true">
+            🌍
+          </span>
+          <span className="contact-balloon" aria-hidden="true">
+            <i />
+          </span>
+          <form className="contact-blob" onSubmit={handleEnquiry}>
+            <p className="clone-kicker">Admission enquiries</p>
+            <h2 id="contact-title">Ask about your child</h2>
+            <div className="contact-line">
+              <label htmlFor="name">Your name</label>
+              <input id="name" name="name" type="text" autoComplete="name" required />
+            </div>
+            <div className="contact-line">
+              <label htmlFor="email">Email address</label>
+              <input id="email" name="email" type="email" autoComplete="email" required />
+            </div>
+            <div className="contact-line">
+              <label htmlFor="phone">Phone number</label>
+              <input id="phone" name="phone" type="tel" autoComplete="tel" required />
+            </div>
+            <div className="contact-line">
+              <label htmlFor="campus">Campus of interest</label>
+              <select id="campus" name="campus" defaultValue="" required>
+                <option value="" disabled>
+                  Choose a campus
+                </option>
+                <option>Magodo (Lagos)</option>
+                <option>Forthright (Magboro)</option>
+              </select>
+            </div>
+            <div className="contact-line">
+              <label htmlFor="stage">Stage of interest</label>
+              <select id="stage" name="stage" defaultValue="" required>
+                <option value="" disabled>
+                  Choose a stage
+                </option>
+                <option>Nursery</option>
+                <option>Lower Primary</option>
+                <option>Upper Primary</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+            <button className="clone-pill contact-submit" type="submit">
+              Prepare enquiry
+            </button>
+            <p className="contact-form-note">
+              Magodo: <a href={magodoMap} target="_blank" rel="noreferrer">{magodo}</a>
+              <br />
+              Forthright: <a href={forthrightMap} target="_blank" rel="noreferrer">{forthright}</a>
+            </p>
+            <p className="form-status" aria-live="polite">
+              {formMessage}
+            </p>
+          </form>
+        </div>
+      </section>
+    </div>
   );
 }
