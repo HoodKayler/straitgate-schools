@@ -1,0 +1,106 @@
+[
+  {
+    "label": "Upgraded Vercel site",
+    "url": "https://straitgate-schools.vercel.app/",
+    "elapsedMs": 7061,
+    "title": "Straitgate Schools",
+    "description": "Straitgate Schools — nurturing academic excellence with Christ-centered values across multiple campuses in Lagos and Ogun State, Nigeria.",
+    "h1": [
+      "Raising Godly Leaders for Global Impact"
+    ],
+    "h2Count": 8,
+    "links": 24,
+    "images": 18,
+    "buttons": 14,
+    "forms": 0,
+    "domNodes": 459,
+    "navTiming": {
+      "domContentLoaded": 2042,
+      "loadEventEnd": 2691,
+      "transferSize": 14830,
+      "encodedBodySize": 14530
+    },
+    "resources": {
+      "total": 20,
+      "byType": {
+        "document": {
+          "count": 1,
+          "bytes": 0
+        },
+        "script": {
+          "count": 10,
+          "bytes": 55134
+        },
+        "font": {
+          "count": 1,
+          "bytes": 48432
+        },
+        "image": {
+          "count": 3,
+          "bytes": 454004
+        },
+        "stylesheet": {
+          "count": 1,
+          "bytes": 0
+        },
+        "fetch": {
+          "count": 3,
+          "bytes": 0
+        },
+        "other": {
+          "count": 1,
+          "bytes": 0
+        }
+      }
+    }
+  },
+  {
+    "label": "Original website",
+    "url": "https://straitgateschool.org/",
+    "elapsedMs": 8301,
+    "title": "Straitgate | Home",
+    "description": "",
+    "h1": [],
+    "h2Count": 0,
+    "links": 95,
+    "images": 66,
+    "buttons": 8,
+    "forms": 0,
+    "domNodes": 791,
+    "navTiming": {
+      "domContentLoaded": 3281,
+      "loadEventEnd": 0,
+      "transferSize": 28587,
+      "encodedBodySize": 28287
+    },
+    "resources": {
+      "total": 63,
+      "byType": {
+        "document": {
+          "count": 1,
+          "bytes": 0
+        },
+        "stylesheet": {
+          "count": 11,
+          "bytes": 15749
+        },
+        "script": {
+          "count": 18,
+          "bytes": 57900
+        },
+        "image": {
+          "count": 26,
+          "bytes": 6268251
+        },
+        "media": {
+          "count": 2,
+          "bytes": 32765875
+        },
+        "font": {
+          "count": 5,
+          "bytes": 572772
+        }
+      }
+    }
+  }
+]
