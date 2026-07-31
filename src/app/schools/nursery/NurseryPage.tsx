@@ -49,10 +49,10 @@ const featuredCourses = [
 const activities = ['Outdoor Games', 'Table/Floor Toys', 'Sport Activities', 'Water Games'];
 
 const gallery = [
-  { src: '/straitgate-nursery-and-primary-school-magodo.jpg', alt: 'Straitgate Magodo pupils learning together' },
-  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.jpg', alt: 'Straitgate Forthright pupils at play' },
+  { src: '/straitgate-nursery-and-primary-school-magodo3.jpg', alt: 'Straitgate Magodo pupils learning together' },
+  { src: '/straitgate-nursery-and-primary-school-magodo5.jpg', alt: 'Straitgate Forthright pupils at play' },
   { src: '/straitgate-nursery-and-primary-school-magodo4.jpg', alt: 'Young Straitgate learners collaborating' },
-  { src: '/straitgate-nursery-and-primary-school-forthright-gallery.1.jpg', alt: 'Straitgate Forthright classroom life' },
+  { src: '/straitgate-nursery-and-primary-school-magodo8.jpg', alt: 'Straitgate Forthright classroom life' },
   { src: '/straitgate-nursery-and-primary-school-magodo9.jpg', alt: 'Active pupil life at Straitgate Magodo' },
   { src: '/straitgate-nursery-and-primary-school-forthright-gallery.2.jpg', alt: 'A colourful Straitgate learning moment' },
   { src: '/straitgate-nursery-and-primary-school-magodo11.jpg', alt: 'Reading time at Straitgate Magodo' },
@@ -61,7 +61,7 @@ const gallery = [
 
 const newsItems = [
   {
-    src: '/nursery-playful/reference-sections/news-1.jpg',
+    src: '/straitgate-nursery-and-primary-school-magodo8.jpg',
     alt: 'A child enjoying a book outdoors',
     title: 'Make learning fun for your child',
     date: 'June 10, 2026',
@@ -69,7 +69,7 @@ const newsItems = [
     href: 'https://www.straitgateschool.org/public/index.php/schools/straitgate-nursery-and-primary-school-forthright/news/28',
   },
   {
-    src: '/nursery-playful/reference-sections/news-2.jpg',
+    src: '/straitgate-nursery-and-primary-school-magodo12.jpg',
     alt: 'Two children lying together and smiling',
     title: 'Growing confidence every day',
     date: 'May 24, 2026',
@@ -290,7 +290,7 @@ export default function NurseryPage({
           </div>
           <div className="choice-photo">
             <Image
-              src="/nursery-playful/reference-sections/why-reading.jpg"
+              src="/straitgate-nursery-and-primary-school-magodo.jpg"
               alt="Children reading colourful books together"
               fill
               sizes="(max-width: 800px) 92vw, 42vw"
