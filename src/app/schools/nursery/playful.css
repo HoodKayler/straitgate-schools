@@ -221,8 +221,13 @@
 }
 
 .button-sun {
-  background: var(--sun);
-  color: var(--navy);
+  background: #ac0c30;
+  color: #fff;
+}
+
+.button-sun:hover,
+.button-sun:focus-visible {
+  background: #8a0a26;
 }
 
 .button-navy {
@@ -2196,6 +2201,11 @@
   color: rgba(255, 255, 255, 0.72);
 }
 
+.clone-announcement .clone-kicker,
+.clone-choice .clone-kicker {
+  color: #172554;
+}
+
 .clone-pill {
   min-height: 42px;
   padding: 0 24px;
@@ -2204,21 +2214,23 @@
   justify-content: center;
   border: 0;
   border-radius: 999px;
-  background: #4b2588;
+  background: #172554;
   color: var(--white);
   font: inherit;
   font-size: 0.78rem;
   font-weight: 850;
-  box-shadow: 0 6px 0 rgba(55, 44, 84, 0.14);
+  box-shadow: 0 6px 0 rgba(23, 37, 84, 0.18);
   cursor: pointer;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
 .clone-pill:hover,
 .clone-pill:focus-visible {
-  box-shadow: 0 3px 0 rgba(55, 44, 84, 0.16);
+  background: #1e3a6d;
+  box-shadow: 0 3px 0 rgba(23, 37, 84, 0.2);
   transform: translateY(3px);
 }
 
@@ -2633,7 +2645,7 @@
   z-index: 3;
   width: 43%;
   max-width: 470px;
-  margin-left: 150px;
+  margin-left: 60px;
 }
 
 .activities-copy h2 {
@@ -2882,6 +2894,17 @@
 .enrol-band-inner small {
   color: #46414d;
   font-size: 0.68rem;
+}
+
+.enrol-band-inner .clone-pill:first-of-type {
+  background: #ac0c30;
+  box-shadow: 0 6px 0 rgba(172, 12, 48, 0.2);
+}
+
+.enrol-band-inner .clone-pill:first-of-type:hover,
+.enrol-band-inner .clone-pill:first-of-type:focus-visible {
+  background: #8a0a26;
+  box-shadow: 0 3px 0 rgba(172, 12, 48, 0.24);
 }
 
 .clone-gallery {
@@ -3190,13 +3213,23 @@
 .contact-blob {
   position: relative;
   z-index: 4;
-  width: min(650px, 62vw);
-  min-height: 575px;
+  width: min(680px, 60vw);
+  min-height: 0;
   margin-left: auto;
-  padding: 82px 100px 65px;
+  padding: 96px 104px 130px;
   border-radius: 50% 47% 46% 54% / 43% 48% 52% 57%;
   background: #ffb600;
   box-shadow: 0 24px 55px rgba(69, 50, 42, 0.1);
+}
+
+.contact-blob .clone-kicker,
+.contact-blob h2 {
+  text-align: center;
+}
+
+.contact-blob .contact-submit {
+  display: flex;
+  margin-inline: auto;
 }
 
 .clone-contact h2 {
@@ -3205,7 +3238,7 @@
 }
 
 .contact-line {
-  margin-bottom: 24px;
+  margin-bottom: 18px;
   display: grid;
   gap: 5px;
   border-bottom: 1px solid rgba(55, 51, 54, 0.35);
@@ -3387,7 +3420,7 @@
   }
 
   .activities-copy {
-    margin-left: 80px;
+    margin-left: 32px;
   }
 
   .painting-child {
