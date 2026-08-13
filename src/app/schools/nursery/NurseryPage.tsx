@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import './playful.css';
 
 type NurseryPageProps = {
@@ -78,6 +78,48 @@ const newsItems = [
   },
 ];
 
+const announcements = [
+  {
+    title: 'Admissions are open',
+    copy: 'Admissions enquiries are open for the next Nursery and Primary intake at our Magodo (Lagos) and Forthright (Magboro) campuses. Tour our learning spaces, meet the team and discover a community where every child is known.',
+    action: 'Enquire now',
+    href: '#contact',
+  },
+  {
+    title: 'Come and meet us',
+    copy: 'See joyful learning in action with a guided visit to either campus. Meet our teachers, explore the classrooms and ask the questions that matter to your family.',
+    action: 'Plan a visit',
+    href: '#contact',
+  },
+  {
+    title: 'Two welcoming campuses',
+    copy: 'Choose Magodo in Lagos or Forthright in Magboro. Both campuses offer Christ-centered care, excellent teaching and a warm community where children can thrive.',
+    action: 'Talk to our team',
+    href: '#contact',
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      'Straitgate has been an incredible blessing for our family. The academic standards are high, and our children have grown not just intellectually but in character and faith.',
+    name: 'Mrs. Adebayo',
+    role: 'Straitgate parent',
+  },
+  {
+    quote:
+      'Our daughter looks forward to school every morning. Her confidence, curiosity and kindness have grown beautifully because her teachers truly know and encourage her.',
+    name: 'Mrs. Okafor',
+    role: 'Nursery parent',
+  },
+  {
+    quote:
+      'The warm environment and strong partnership with parents give us real peace of mind. We see thoughtful learning and excellent values reflected at home every day.',
+    name: 'Mr. Williams',
+    role: 'Primary school parent',
+  },
+];
+
 function CourseGlyph({ type }: { type: string }) {
   if (type === 'school') {
     return (
@@ -119,12 +161,129 @@ export default function NurseryPage({
   forthrightApplyUrl,
 }: NurseryPageProps) {
   const [formMessage, setFormMessage] = useState('');
+  const [announcementIndex, setAnnouncementIndex] = useState(0);
+  const [announcementDirection, setAnnouncementDirection] = useState(1);
+  const [isAnnouncementPaused, setIsAnnouncementPaused] = useState(false);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [testimonialDirection, setTestimonialDirection] = useState(1);
+  const [isTestimonialPaused, setIsTestimonialPaused] = useState(false);
+  const [newsIndex, setNewsIndex] = useState(0);
+  const [newsDirection, setNewsDirection] = useState(1);
+  const [isNewsPaused, setIsNewsPaused] = useState(false);
+  const pageRef = useRef<HTMLDivElement>(null);
   const galleryTrackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const page = pageRef.current;
+
+    if (!page || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      return;
+    }
+
+    const revealTargets = Array.from(page.children)
+      .filter((element): element is HTMLElement => element instanceof HTMLElement && element.tagName === 'SECTION')
+      .map((section) => section.querySelector<HTMLElement>('.hero-grid, .clone-shell'))
+      .filter((target): target is HTMLElement => target !== null);
+
+    page.classList.add('reveal-ready');
+    revealTargets.forEach((target) => target.classList.add('view-reveal'));
+    revealTargets[0]?.classList.add('is-visible');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    revealTargets.slice(1).forEach((target) => observer.observe(target));
+
+    return () => {
+      observer.disconnect();
+      page.classList.remove('reveal-ready');
+      revealTargets.forEach((target) => target.classList.remove('view-reveal', 'is-visible'));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isAnnouncementPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setAnnouncementDirection(1);
+      setAnnouncementIndex((current) => (current + 1) % announcements.length);
+    }, 15000);
+
+    return () => window.clearInterval(timer);
+  }, [announcementIndex, isAnnouncementPaused]);
+
+  useEffect(() => {
+    if (isTestimonialPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setTestimonialDirection(1);
+      setTestimonialIndex((current) => (current + 1) % testimonials.length);
+    }, 15000);
+
+    return () => window.clearInterval(timer);
+  }, [testimonialIndex, isTestimonialPaused]);
+
+  useEffect(() => {
+    if (isNewsPaused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setNewsDirection(1);
+      setNewsIndex((current) => (current + 1) % newsItems.length);
+    }, 15000);
+
+    return () => window.clearInterval(timer);
+  }, [newsIndex, isNewsPaused]);
 
   const magodo = magodoAddress || 'Plot 86 Block 122 Alh. Basheer Shittu Street, Magodo, Lagos';
   const forthright = forthrightAddress || 'Road D, Forthright Gardens, Magboro, Ogun State';
   const magodoMap = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(magodo)}`;
   const forthrightMap = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(forthright)}`;
+  const activeAnnouncement = announcements[announcementIndex];
+  const activeTestimonial = testimonials[testimonialIndex];
+  const orderedNewsItems = newsItems.map((_, offset) => newsItems[(newsIndex + offset) % newsItems.length]);
+
+  function changeAnnouncement(direction: -1 | 1) {
+    setAnnouncementDirection(direction);
+    setAnnouncementIndex((current) => (current + direction + announcements.length) % announcements.length);
+  }
+
+  function changeTestimonial(direction: -1 | 1) {
+    setTestimonialDirection(direction);
+    setTestimonialIndex((current) => (current + direction + testimonials.length) % testimonials.length);
+  }
+
+  function changeNews(direction: -1 | 1) {
+    setNewsDirection(direction);
+    setNewsIndex((current) => (current + direction + newsItems.length) % newsItems.length);
+  }
+
+  function handleAnnouncementLink(event: MouseEvent<HTMLAnchorElement>) {
+    const targetSelector = event.currentTarget.getAttribute('href');
+    const target = targetSelector?.startsWith('#') ? document.querySelector(targetSelector) : null;
+
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  }
 
   function handleEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -144,7 +303,7 @@ export default function NurseryPage({
   }
 
   return (
-    <div className="np">
+    <div ref={pageRef} className="np">
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-word hero-word-top" aria-hidden="true">
           LEARN
@@ -155,7 +314,7 @@ export default function NurseryPage({
         <div className="hero-doodle hero-doodle-one" aria-hidden="true">
           ✦
         </div>
-        <div className="hero-doodle hero-doodle-two" aria-hidden="true">
+        <div className="hero-doodle hero-doodle-two decorative-cross" aria-hidden="true">
           +
         </div>
         <div className="hero-grid">
@@ -234,34 +393,56 @@ export default function NurseryPage({
         </svg>
       </section>
 
-      <section id="main-content" className="clone-announcement" aria-labelledby="announcement-title">
-        <div className="clone-shell announcement-grid">
+      <section
+        id="main-content"
+        className="clone-announcement"
+        aria-labelledby="announcement-title"
+        aria-roledescription="carousel"
+        onMouseEnter={() => setIsAnnouncementPaused(true)}
+        onMouseLeave={() => setIsAnnouncementPaused(false)}
+        onFocusCapture={() => setIsAnnouncementPaused(true)}
+        onBlurCapture={() => setIsAnnouncementPaused(false)}
+      >
+        <div className="clone-shell announcement-grid" aria-live={isAnnouncementPaused ? 'polite' : 'off'}>
           <div className="announcement-art" aria-hidden="true">
             <Image src="/nursery-playful/reference-sections/announcement-girl.jpg" alt="" width={240} height={390} unoptimized />
           </div>
           <div className="announcement-title">
             <p className="clone-kicker">From the school desk</p>
-            <h2 id="announcement-title">Announcement</h2>
-            <div className="clone-controls" aria-hidden="true">
-              <span>‹</span>
-              <span>›</span>
+            <div
+              key={`heading-${announcementIndex}`}
+              className="announcement-heading-slide"
+              data-direction={announcementDirection}
+            >
+              <h2 id="announcement-title">{activeAnnouncement.title}</h2>
+            </div>
+            <div className="clone-controls">
+              <button type="button" aria-label="Previous announcement" onClick={() => changeAnnouncement(-1)}>
+                <span aria-hidden="true">&lsaquo;</span>
+              </button>
+              <button type="button" aria-label="Next announcement" onClick={() => changeAnnouncement(1)}>
+                <span aria-hidden="true">&rsaquo;</span>
+              </button>
             </div>
           </div>
-          <div className="announcement-copy">
-            <p>
-              Admissions enquiries are open for the next Nursery and Primary intake at our Magodo (Lagos) and Forthright
-              (Magboro) campuses. Tour our learning spaces, meet the team and discover a community where every child is
-              known.
-            </p>
-            <a className="clone-pill" href="#contact">
-              Enquire now
+          <div
+            key={`copy-${announcementIndex}`}
+            className="announcement-copy announcement-slide"
+            data-direction={announcementDirection}
+          >
+            <p>{activeAnnouncement.copy}</p>
+            <a className="clone-pill" href={activeAnnouncement.href} onClick={handleAnnouncementLink}>
+              {activeAnnouncement.action}
             </a>
+            <span className="announcement-position" aria-hidden="true">
+              {announcementIndex + 1} / {announcements.length}
+            </span>
           </div>
         </div>
         <span className="clone-star announcement-star-one" aria-hidden="true">
           ✦
         </span>
-        <span className="clone-star announcement-star-two" aria-hidden="true">
+        <span className="clone-star announcement-star-two decorative-cross" aria-hidden="true">
           +
         </span>
       </section>
@@ -368,7 +549,7 @@ export default function NurseryPage({
           </svg>
           <span className="science-planet" />
           <span className="science-star science-star-one">✦</span>
-          <span className="science-star science-star-two">+</span>
+          <span className="science-star science-star-two decorative-cross">+</span>
         </div>
         <div className="clone-shell activities-layout">
           <div className="activities-copy">
@@ -410,14 +591,29 @@ export default function NurseryPage({
 
       <section className="clone-enrol-band" aria-label="Admissions call to action">
         <div className="clone-shell enrol-band-inner">
-          <strong>Make your child&apos;s school years special at Straitgate.</strong>
-          <a className="clone-pill" href={magodoApplyUrl} target="_blank" rel="noreferrer">
-            Register — Magodo
+          <div className="enrol-band-copy">
+            <span>Ready to apply?</span>
+            <strong>Choose the campus that is most convenient for your family.</strong>
+            <p>Each option opens the online admission form for that specific Straitgate Nursery &amp; Primary campus.</p>
+          </div>
+          <div className="enrol-campus-actions">
+            <a className="enrol-campus-card enrol-campus-magodo" href={magodoApplyUrl} target="_blank" rel="noreferrer">
+              <span>Magodo campus</span>
+              <small>Lagos · Open application form</small>
+            </a>
+            <a
+              className="enrol-campus-card enrol-campus-forthright"
+              href={forthrightApplyUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>Forthright campus</span>
+              <small>Magboro, Ogun State · Open application form</small>
+            </a>
+          </div>
+          <a className="enrol-help-link" href="#contact" onClick={handleAnnouncementLink}>
+            Not sure which campus to choose? Ask our admissions team →
           </a>
-          <a className="clone-pill" href={forthrightApplyUrl} target="_blank" rel="noreferrer">
-            Register — Forthright
-          </a>
-          <small>Two campuses · Lagos &amp; Ogun State</small>
         </div>
       </section>
 
@@ -467,7 +663,16 @@ export default function NurseryPage({
         </div>
       </section>
 
-      <section className="clone-testimonial" aria-labelledby="testimonial-title">
+      <section
+        className="clone-testimonial"
+        aria-labelledby="testimonial-title"
+        onMouseEnter={() => setIsTestimonialPaused(true)}
+        onMouseLeave={() => setIsTestimonialPaused(false)}
+        onFocusCapture={() => setIsTestimonialPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setIsTestimonialPaused(false);
+        }}
+      >
         <Image
           className="testimonial-woman"
           src="/nursery-playful/reference-sections/testimonial-woman.png"
@@ -482,23 +687,33 @@ export default function NurseryPage({
           <div className="testimonial-title">
             <p className="clone-kicker clone-kicker-light">What families say</p>
             <h2 id="testimonial-title">Parents&apos; testimonials</h2>
-            <div className="clone-controls clone-controls-light" aria-hidden="true">
-              <span>‹</span>
-              <span>›</span>
+            <div className="clone-controls clone-controls-light">
+              <button type="button" aria-label="Show previous parent testimonial" onClick={() => changeTestimonial(-1)}>
+                &lsaquo;
+              </button>
+              <button type="button" aria-label="Show next parent testimonial" onClick={() => changeTestimonial(1)}>
+                &rsaquo;
+              </button>
             </div>
           </div>
-          <div className="testimonial-quote">
+          <div
+            className="testimonial-quote"
+            key={testimonialIndex}
+            data-direction={testimonialDirection}
+            aria-live="polite"
+            aria-atomic="true"
+          >
             <span className="testimonial-quote-mark" aria-hidden="true">
-              “
+              &ldquo;
             </span>
-            <blockquote>
-              Straitgate has been an incredible blessing for our family. The academic standards are high, and our children
-              have grown not just intellectually but in character and faith.
-            </blockquote>
+            <blockquote>{activeTestimonial.quote}</blockquote>
             <cite>
-              <strong>Mrs. Adebayo</strong>
-              <span>Straitgate parent</span>
+              <strong>{activeTestimonial.name}</strong>
+              <span>{activeTestimonial.role}</span>
             </cite>
+            <span className="testimonial-position" aria-hidden="true">
+              {String(testimonialIndex + 1).padStart(2, '0')} / {String(testimonials.length).padStart(2, '0')}
+            </span>
           </div>
         </div>
         <div className="testimonial-notebook" aria-hidden="true">
@@ -506,39 +721,59 @@ export default function NurseryPage({
         </div>
       </section>
 
-      <section className="clone-news" aria-labelledby="news-title">
+      <section
+        className="clone-news"
+        aria-labelledby="news-title"
+        onMouseEnter={() => setIsNewsPaused(true)}
+        onMouseLeave={() => setIsNewsPaused(false)}
+        onFocusCapture={() => setIsNewsPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setIsNewsPaused(false);
+        }}
+      >
         <div className="clone-shell">
           <div className="clone-center-heading">
             <p className="clone-kicker">Stories from our community</p>
             <h2 id="news-title">Latest news</h2>
           </div>
           <div className="news-row">
-            <span className="news-arrow news-arrow-left" aria-hidden="true">
-              ‹
-            </span>
-            {newsItems.map((item) => (
-              <article className="news-card" key={item.title}>
-                <div className="news-photo">
-                  <Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 42vw, 230px" unoptimized />
-                </div>
-                <div className="news-copy">
-                  <h3>{item.title}</h3>
-                  <p className="news-date">
-                    <span aria-hidden="true">▣</span>
-                    {item.date}
-                  </p>
-                  <p>{item.copy}</p>
-                  <a href={item.href} target="_blank" rel="noreferrer">
-                    Read more
-                  </a>
-                </div>
-              </article>
-            ))}
-            <span className="news-arrow news-arrow-right" aria-hidden="true">
-              ›
-            </span>
+            <button className="news-arrow news-arrow-left" type="button" aria-label="Show previous news story" onClick={() => changeNews(-1)}>
+              &lsaquo;
+            </button>
+            <div
+              className="news-cards-track"
+              key={newsIndex}
+              data-direction={newsDirection}
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {orderedNewsItems.map((item) => (
+                <article className="news-card" key={item.title}>
+                  <div className="news-photo">
+                    <Image src={item.src} alt={item.alt} fill sizes="(max-width: 700px) 90vw, 230px" unoptimized />
+                  </div>
+                  <div className="news-copy">
+                    <h3>{item.title}</h3>
+                    <p className="news-date">
+                      <span aria-hidden="true">&#9635;</span>
+                      {item.date}
+                    </p>
+                    <p>{item.copy}</p>
+                    <a href={item.href} target="_blank" rel="noreferrer">
+                      Read more
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <button className="news-arrow news-arrow-right" type="button" aria-label="Show next news story" onClick={() => changeNews(1)}>
+              &rsaquo;
+            </button>
           </div>
-          <a className="clone-pill news-button" href="#contact">
+          <p className="news-position" aria-hidden="true">
+            {String(newsIndex + 1).padStart(2, '0')} / {String(newsItems.length).padStart(2, '0')}
+          </p>
+          <a className="clone-pill news-button" href="#contact" onClick={handleAnnouncementLink}>
             Visit or enquire
           </a>
         </div>
@@ -567,55 +802,57 @@ export default function NurseryPage({
           <span className="contact-balloon" aria-hidden="true">
             <i />
           </span>
-          <form className="contact-blob" onSubmit={handleEnquiry}>
-            <p className="clone-kicker">Admission enquiries</p>
-            <h2 id="contact-title">Ask about your child</h2>
-            <div className="contact-line">
-              <label htmlFor="name">Your name</label>
-              <input id="name" name="name" type="text" autoComplete="name" required />
-            </div>
-            <div className="contact-line">
-              <label htmlFor="email">Email address</label>
-              <input id="email" name="email" type="email" autoComplete="email" required />
-            </div>
-            <div className="contact-line">
-              <label htmlFor="phone">Phone number</label>
-              <input id="phone" name="phone" type="tel" autoComplete="tel" required />
-            </div>
-            <div className="contact-line">
-              <label htmlFor="campus">Campus of interest</label>
-              <select id="campus" name="campus" defaultValue="" required>
-                <option value="" disabled>
-                  Choose a campus
-                </option>
-                <option>Magodo (Lagos)</option>
-                <option>Forthright (Magboro)</option>
-              </select>
-            </div>
-            <div className="contact-line">
-              <label htmlFor="stage">Stage of interest</label>
-              <select id="stage" name="stage" defaultValue="" required>
-                <option value="" disabled>
-                  Choose a stage
-                </option>
-                <option>Nursery</option>
-                <option>Lower Primary</option>
-                <option>Upper Primary</option>
-                <option>Not sure yet</option>
-              </select>
-            </div>
-            <button className="clone-pill contact-submit" type="submit">
-              Prepare enquiry
-            </button>
-            <p className="contact-form-note">
-              Magodo: <a href={magodoMap} target="_blank" rel="noreferrer">{magodo}</a>
-              <br />
-              Forthright: <a href={forthrightMap} target="_blank" rel="noreferrer">{forthright}</a>
-            </p>
-            <p className="form-status" aria-live="polite">
-              {formMessage}
-            </p>
-          </form>
+          <div className="contact-airship">
+            <form className="contact-blob" onSubmit={handleEnquiry}>
+              <p className="clone-kicker">Admission enquiries</p>
+              <h2 id="contact-title">Ask about your child</h2>
+              <div className="contact-line">
+                <label htmlFor="name">Your name</label>
+                <input id="name" name="name" type="text" autoComplete="name" required />
+              </div>
+              <div className="contact-line">
+                <label htmlFor="email">Email address</label>
+                <input id="email" name="email" type="email" autoComplete="email" required />
+              </div>
+              <div className="contact-line">
+                <label htmlFor="phone">Phone number</label>
+                <input id="phone" name="phone" type="tel" autoComplete="tel" required />
+              </div>
+              <div className="contact-line">
+                <label htmlFor="campus">Campus of interest</label>
+                <select id="campus" name="campus" defaultValue="" required>
+                  <option value="" disabled>
+                    Choose a campus
+                  </option>
+                  <option>Magodo (Lagos)</option>
+                  <option>Forthright (Magboro)</option>
+                </select>
+              </div>
+              <div className="contact-line">
+                <label htmlFor="stage">Stage of interest</label>
+                <select id="stage" name="stage" defaultValue="" required>
+                  <option value="" disabled>
+                    Choose a stage
+                  </option>
+                  <option>Nursery</option>
+                  <option>Lower Primary</option>
+                  <option>Upper Primary</option>
+                  <option>Not sure yet</option>
+                </select>
+              </div>
+              <button className="clone-pill contact-submit" type="submit">
+                Prepare enquiry
+              </button>
+              <p className="contact-form-note">
+                Magodo: <a href={magodoMap} target="_blank" rel="noreferrer">{magodo}</a>
+                <br />
+                Forthright: <a href={forthrightMap} target="_blank" rel="noreferrer">{forthright}</a>
+              </p>
+              <p className="form-status" aria-live="polite">
+                {formMessage}
+              </p>
+            </form>
+          </div>
         </div>
       </section>
     </div>
