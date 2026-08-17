@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { getGeneral, getSchools } from '@/lib/content';
-import NurseryPage from './NurseryPage';
+import PrimaryPage from './PrimaryPage';
 
 export const metadata: Metadata = {
-  title: 'Straitgate Nursery School',
+  title: 'Straitgate Primary School',
   description:
-    'Meet Straitgate Nursery School — two joyful, Christ-centered campuses in Magodo, Lagos and Forthright Gardens, Magboro, Ogun State, where every little learner is nurtured to shine.',
+    'Meet Straitgate Primary School — two joyful, Christ-centered campuses in Magodo, Lagos and Forthright Gardens, Magboro, Ogun State, where every learner is nurtured to shine.',
 };
 
-export default function StraitgateNursery() {
+export default function StraitgatePrimary() {
   const schools = getSchools();
   const general = getGeneral();
 
@@ -18,11 +18,13 @@ export default function StraitgateNursery() {
   const forthrightAdmission = general.admission_links?.find((link) => link.name.toLowerCase().includes('forthright'));
 
   return (
-    <NurseryPage
+    <PrimaryPage
       magodoAddress={magodo?.address}
       forthrightAddress={forthright?.address}
       magodoApplyUrl={magodoAdmission?.url ?? 'https://straitgatemagodo.educare.school/admission-form'}
       forthrightApplyUrl={forthrightAdmission?.url ?? 'https://sgf.educare.school/admission-form'}
+      mission={general.mission}
+      welcomeMessages={general.welcome_messages}
     />
   );
 }

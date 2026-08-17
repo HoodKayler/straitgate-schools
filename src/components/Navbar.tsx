@@ -46,7 +46,10 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
     : undefined;
   const activeSchool = schools.find((school) => school.initial === activeSchoolSlug);
   const brandLabel =
-    activeSchoolSlug === 'nursery' ? 'Straitgate Nursery & Primary' : activeSchool ? activeSchool.name : 'Straitgate Schools';
+    activeSchoolSlug === 'nursery' ? 'Straitgate Nursery'
+    : activeSchoolSlug === 'primary' ? 'Straitgate Primary'
+    : activeSchool ? activeSchool.name
+    : 'Straitgate Schools';
   const isStraitgateCollege = activeSchoolSlug === 'sc';
   const logoConfig =
     activeSchoolSlug === 'sc'
@@ -63,10 +66,10 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             width: 248,
             height: 292,
           }
-        : activeSchoolSlug === 'nursery'
+        : activeSchoolSlug === 'nursery' || activeSchoolSlug === 'primary'
           ? {
               src: '/sgpics/logos/straitgate-nursery-primary.png',
-              alt: 'Straitgate Nursery and Primary logo',
+              alt: activeSchoolSlug === 'primary' ? 'Straitgate Primary School logo' : 'Straitgate Nursery School logo',
               width: 267,
               height: 277,
             }
@@ -78,6 +81,7 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             };
   const schoolMenuLinks = [
     { key: 'nursery', name: 'Nursery', href: '/schools/nursery' },
+    { key: 'primary', name: 'Primary School', href: '/schools/primary' },
     ...schools
       .filter((school) => school.initial !== 'snps-magodo' && school.initial !== 'snps-magboro')
       .map((school) => ({ key: String(school.id), name: school.name, href: `/schools/${school.initial}` })),
