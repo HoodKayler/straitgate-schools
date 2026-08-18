@@ -46,8 +46,11 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
     : undefined;
   const activeSchool = schools.find((school) => school.initial === activeSchoolSlug);
   const brandLabel =
-    activeSchoolSlug === 'nursery' ? 'Straitgate Nursery & Primary' : activeSchool ? activeSchool.name : 'Straitgate Schools';
-  const isStraitgateCollege = activeSchoolSlug === 'sc';
+    activeSchoolSlug === 'nursery' ? 'Straitgate Nursery'
+    : activeSchoolSlug === 'primary' ? 'Straitgate Primary'
+    : activeSchoolSlug === 'secondary' ? 'Straitgate Secondary'
+    : activeSchool ? activeSchool.name
+    : 'Straitgate Schools';
   const logoConfig =
     activeSchoolSlug === 'sc'
       ? {
@@ -63,24 +66,23 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             width: 248,
             height: 292,
           }
-        : activeSchoolSlug === 'nursery'
+        : activeSchoolSlug === 'nursery' || activeSchoolSlug === 'primary'
           ? {
               src: '/sgpics/logos/straitgate-nursery-primary.png',
-              alt: 'Straitgate Nursery and Primary logo',
+              alt: activeSchoolSlug === 'primary' ? 'Straitgate Primary School logo' : 'Straitgate Nursery School logo',
               width: 267,
               height: 277,
             }
           : {
               src: '/sgpics/logos/home.png',
-              alt: 'Straitgate Schools logo',
+              alt: activeSchoolSlug === 'secondary' ? 'Straitgate Secondary School logo' : 'Straitgate Schools logo',
               width: 840,
               height: 472,
             };
   const schoolMenuLinks = [
     { key: 'nursery', name: 'Nursery', href: '/schools/nursery' },
-    ...schools
-      .filter((school) => school.initial !== 'snps-magodo' && school.initial !== 'snps-magboro')
-      .map((school) => ({ key: String(school.id), name: school.name, href: `/schools/${school.initial}` })),
+    { key: 'primary', name: 'Primary School', href: '/schools/primary' },
+    { key: 'secondary', name: 'Secondary School', href: '/schools/secondary' },
   ];
   const logoClassName = 'h-14 w-auto object-contain sm:h-20';
   const [scrolled, setScrolled] = useState(false);
@@ -218,7 +220,7 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             href={activeSchoolSlug ? pathname : '/'}
             onClick={handleBrandClick}
             className="flex items-center gap-3"
-            aria-label={isStraitgateCollege ? 'Refresh Straitgate College page' : 'Straitgate Schools home'}
+            aria-label={activeSchoolSlug ? `Refresh ${brandLabel} page` : 'Straitgate Schools home'}
           >
             <Image
               src={logoConfig.src}
@@ -289,7 +291,7 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
                   href={activeSchoolSlug ? pathname : '/'}
                   onClick={handleBrandClick}
                   className="flex items-center gap-3"
-                  aria-label={isStraitgateCollege ? 'Refresh Straitgate College page' : 'Straitgate Schools home'}
+                  aria-label={activeSchoolSlug ? `Refresh ${brandLabel} page` : 'Straitgate Schools home'}
                 >
                   <Image
                     src={logoConfig.src}

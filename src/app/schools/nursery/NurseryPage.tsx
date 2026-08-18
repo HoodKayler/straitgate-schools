@@ -41,8 +41,8 @@ const choiceItems = [
 
 const featuredCourses = [
   { icon: 'lotus', title: ['Nursery', '& Pre-K'], color: 'pink' },
-  { icon: 'book', title: ['Lower', 'Primary'], color: 'pink' },
-  { icon: 'school', title: ['Upper', 'Primary'], color: 'blue' },
+  { icon: 'book', title: ['Early', 'Learning'], color: 'pink' },
+  { icon: 'school', title: ['Creative', 'Play'], color: 'blue' },
   { icon: 'shirt', title: ['Activity', 'Clubs'], color: 'blue' },
 ];
 
@@ -81,7 +81,7 @@ const newsItems = [
 const announcements = [
   {
     title: 'Admissions are open',
-    copy: 'Admissions enquiries are open for the next Nursery and Primary intake at our Magodo (Lagos) and Forthright (Magboro) campuses. Tour our learning spaces, meet the team and discover a community where every child is known.',
+    copy: 'Admissions enquiries are open for the next Nursery intake at our Magodo (Lagos) and Forthright (Magboro) campuses. Tour our learning spaces, meet the team and discover a community where every child is known.',
     action: 'Enquire now',
     href: '#contact',
   },
@@ -116,7 +116,7 @@ const testimonials = [
     quote:
       'The warm environment and strong partnership with parents give us real peace of mind. We see thoughtful learning and excellent values reflected at home every day.',
     name: 'Mr. Williams',
-    role: 'Primary school parent',
+    role: 'Nursery school parent',
   },
 ];
 
@@ -329,8 +329,8 @@ export default function NurseryPage({
               Bold futures.
             </h1>
             <p className="hero-intro">
-              A joyful Nursery &amp; Primary School across two campuses, where excellent learning, strong character and
-              every child&apos;s unique gifts grow together.
+              A joyful Nursery School across two campuses, where excellent learning, strong character and every
+              child&apos;s unique gifts grow together.
             </p>
             <div className="hero-actions">
               <a className="button button-sun" href="#contact">
@@ -594,7 +594,7 @@ export default function NurseryPage({
           <div className="enrol-band-copy">
             <span>Ready to apply?</span>
             <strong>Choose the campus that is most convenient for your family.</strong>
-            <p>Each option opens the online admission form for that specific Straitgate Nursery &amp; Primary campus.</p>
+            <p>Each option opens the online admission form for that specific Straitgate Nursery campus.</p>
           </div>
           <div className="enrol-campus-actions">
             <a className="enrol-campus-card enrol-campus-magodo" href={magodoApplyUrl} target="_blank" rel="noreferrer">
@@ -835,8 +835,8 @@ export default function NurseryPage({
                     Choose a stage
                   </option>
                   <option>Nursery</option>
-                  <option>Lower Primary</option>
-                  <option>Upper Primary</option>
+                  <option>Pre-K</option>
+                  <option>Early years</option>
                   <option>Not sure yet</option>
                 </select>
               </div>
