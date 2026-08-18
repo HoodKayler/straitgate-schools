@@ -13,15 +13,14 @@ const socialIconClass = 'h-5 w-5';
 const socialLinkClass = 'text-white/45 transition-colors hover:text-primary';
 const footerLinkClass = 'text-sm leading-6 text-white/55 transition-colors hover:text-white';
 
-export default function Footer({ general, schools }: FooterProps) {
+export default function Footer({ general }: FooterProps) {
   const phone = general.phone;
   const whatsapp = general.whatsapp_phone;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(general.address)}`;
   const schoolFooterLinks = [
-    { key: 'nursery', name: 'Straitgate Nursery & Primary', href: '/schools/nursery' },
-    ...schools
-      .filter((school) => school.initial !== 'snps-magodo' && school.initial !== 'snps-magboro')
-      .map((school) => ({ key: String(school.id), name: school.name, href: `/schools/${school.initial}` })),
+    { key: 'nursery', name: 'Straitgate Nursery', href: '/schools/nursery' },
+    { key: 'primary', name: 'Straitgate Primary', href: '/schools/primary' },
+    { key: 'secondary', name: 'Straitgate Secondary', href: '/schools/secondary' },
   ];
 
   return (

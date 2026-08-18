@@ -48,9 +48,9 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
   const brandLabel =
     activeSchoolSlug === 'nursery' ? 'Straitgate Nursery'
     : activeSchoolSlug === 'primary' ? 'Straitgate Primary'
+    : activeSchoolSlug === 'secondary' ? 'Straitgate Secondary'
     : activeSchool ? activeSchool.name
     : 'Straitgate Schools';
-  const isStraitgateCollege = activeSchoolSlug === 'sc';
   const logoConfig =
     activeSchoolSlug === 'sc'
       ? {
@@ -75,16 +75,14 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             }
           : {
               src: '/sgpics/logos/home.png',
-              alt: 'Straitgate Schools logo',
+              alt: activeSchoolSlug === 'secondary' ? 'Straitgate Secondary School logo' : 'Straitgate Schools logo',
               width: 840,
               height: 472,
             };
   const schoolMenuLinks = [
     { key: 'nursery', name: 'Nursery', href: '/schools/nursery' },
     { key: 'primary', name: 'Primary School', href: '/schools/primary' },
-    ...schools
-      .filter((school) => school.initial !== 'snps-magodo' && school.initial !== 'snps-magboro')
-      .map((school) => ({ key: String(school.id), name: school.name, href: `/schools/${school.initial}` })),
+    { key: 'secondary', name: 'Secondary School', href: '/schools/secondary' },
   ];
   const logoClassName = 'h-14 w-auto object-contain sm:h-20';
   const [scrolled, setScrolled] = useState(false);
@@ -222,7 +220,7 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
             href={activeSchoolSlug ? pathname : '/'}
             onClick={handleBrandClick}
             className="flex items-center gap-3"
-            aria-label={isStraitgateCollege ? 'Refresh Straitgate College page' : 'Straitgate Schools home'}
+            aria-label={activeSchoolSlug ? `Refresh ${brandLabel} page` : 'Straitgate Schools home'}
           >
             <Image
               src={logoConfig.src}
@@ -293,7 +291,7 @@ export default function Navbar({ schools, admissionLinks }: NavbarProps) {
                   href={activeSchoolSlug ? pathname : '/'}
                   onClick={handleBrandClick}
                   className="flex items-center gap-3"
-                  aria-label={isStraitgateCollege ? 'Refresh Straitgate College page' : 'Straitgate Schools home'}
+                  aria-label={activeSchoolSlug ? `Refresh ${brandLabel} page` : 'Straitgate Schools home'}
                 >
                   <Image
                     src={logoConfig.src}
